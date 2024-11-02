@@ -10,24 +10,26 @@ function Signup()
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const [username, setUsername] = useState('');
+    const [name, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     function goBack() {
-        navigate(-1);
+        navigate('/');
     }
 
     function handleSubmit(e) {
         e.preventDefault();
         
         setUsername('');
+        setEmail('');
         setPassword('');
 
-        axios.post('http://localhost:5000/api/signup', {username, password})
+        axios.post('http://localhost:5000/api/signup', {name, email, password})
         .then(res=>{
             if(res.status==200) 
             {
-                dispatch(login({ username, password }));
+                dispatch(login({ name, email, password }));
                 navigate('/dash');
             }
             else
@@ -35,9 +37,10 @@ function Signup()
                 alert('Invalid details')
                 navigate('/signup')
             }
-        })
+        }) 
         .catch(err=>{
             alert('Error')
+            console.log(err)
             navigate('/signup')
     })
     };
@@ -52,9 +55,20 @@ function Signup()
                         <input
                             type="text"
                             id="username"
-                            value={username}
+                            value={name}
                             onChange={(e) => setUsername(e.target.value)}
                             autoComplete="username"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="email">Email</label>
+                        <input
+                            type="text"
+                            id="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            autoComplete="email"
                             required
                         />
                     </div>

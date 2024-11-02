@@ -5,18 +5,31 @@
     justify-content: flex-start;
     align-items: center;
     flex-direction: column;
-    gap: 20px;
 }
 
 .search-filter{
-    background-color: rgb(34, 34, 34);
+    background-color: rgb(46, 46, 46);
     width: 100%;
     height: 60px;
 }
 
 .search-results{
-    background-color: rgb(24, 24, 24);
-    width: 100%;
+    background-color: rgb(171, 121, 121);
     height: 100%;
+    width: 95%;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.search-scrollable{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    .tile-btn{
+        background-color: antiquewhite;
+        width: fit-content;
+        height: fit-content;
+    }
 }
  

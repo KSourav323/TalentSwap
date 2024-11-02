@@ -10,20 +10,20 @@ function Login()
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const [username, setUsername] = useState('');
+    const [name, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     function goBack() {
-        navigate(-1);
+        navigate('/');
     }
 
     function handleSubmit(e) {
         e.preventDefault();
-        axios.post('http://localhost:5000/api/login', {username, password})
+        axios.post('http://localhost:5000/api/login', {name, password})
         .then(res=>{
             if(res.status===200) 
             {
-                dispatch(login({ username, password }));
+                dispatch(login({ name, email:'sourav@gmail.com', password }));
                 setUsername('');
                 setPassword('');
                 navigate('/dash');
@@ -46,13 +46,13 @@ function Login()
                 <h1>Login</h1>
                 <form onSubmit={handleSubmit}>
                     <div>
-                        <label htmlFor="username">Username</label>
+                        <label htmlFor="name">Username</label>
                         <input
                             type="text"
-                            id="username"
-                            value={username}
+                            id="name"
+                            value={name}
                             onChange={(e) => setUsername(e.target.value)}
-                            autoComplete="username"
+                            autoComplete="name"
                             required
                         />
                     </div>

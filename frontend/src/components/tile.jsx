@@ -1,8 +1,10 @@
 import React from 'react'
+import '../style/tile.css'
 
-const Tile = () => {
+const Tile = (item) => {
+
   return (
-    <div>Tile</div>
+    <div className='tile'>{item.tile}</div>
   )
 }
 

@@ -1,0 +1,18 @@
+.play{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+}
+
+.play-nav{
+    width: 100%;
+}
+
+.play-box{
+    background-color: rgb(35, 35, 35);
+    height: 100%;
+    width: 100%;
+}

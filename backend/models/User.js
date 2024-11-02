@@ -10,9 +10,20 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  age: {
-    type: Number,
+  password: {
+    type: String,
+    required: true,
   },
+  enrolledCourses: [
+    {
+      type: String
+    }
+  ],
+  teachingCourses: [
+    {
+      type: String  
+    }
+  ]
 }, { timestamps: true });
 
 const User = mongoose.model('User', userSchema);
