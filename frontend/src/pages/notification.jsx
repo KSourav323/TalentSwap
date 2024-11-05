@@ -1,18 +1,17 @@
 import React from 'react'
-import { useNavigate} from 'react-router-dom';
+import Navbar from '../components/navbar.jsx';
+import '../style/notification.css'
 
 const Notification = () => {
-    const navigate = useNavigate()
-
-    function goBack() {
-        navigate(-1);
-      }
 
     return (
-      <div>
-        Notifications
-        <p>personal messages</p>
-        <button className="go-back" onClick={goBack}>Go Back 🡭</button>
+      <div className='noti'>
+        <Navbar/> 
+        <div className='noti-body'>
+          <p>messages</p>
+          <p>messages</p>
+          <p>messages</p>
+        </div>
       </div>
   )
 }

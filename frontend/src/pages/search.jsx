@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import '../style/search.css'
 import { useNavigate} from 'react-router-dom';
 import Tile from '../components/tile';
+import Navbar from '../components/navbar.jsx';
 import axios from 'axios';
 
 const Search = () => {
@@ -12,10 +13,6 @@ const Search = () => {
   function handleTile(item) {
     console.log(item)
     navigate(`/course/${item}`);
-  }
-
-  function handleGoBack() {
-    navigate('/dash')
   }
 
   useEffect(() => {
@@ -40,19 +37,23 @@ const Search = () => {
 
   return (
     <div className='search'>
-      <div className='search-filter'>
-        <input type="text" />
-        <button>Search</button>
-        <button onClick={handleGoBack}>Go back</button>
-      </div>
+      <Navbar/>
+      <div className='search-body'>
+        <div className='search-div'>
+          <div className="search-pill">
+            <input type="text" />
+            <button>Go</button>
+          </div>
+        </div>
 
-      <div className='search-results'>
-        <div className='search-scrollable'>
-          {results.map((item, index) => (
-            <div className='tile-btn' key={index} onClick={() => handleTile(item.courseId)}>
-                  <Tile tile={item.courseName} />
-              </div>
-            ))}
+        <div className='search-results'>
+          <div className='search-scrollable'>
+            {results.map((item, index) => (
+              <div className='tile-btn' key={index} onClick={() => handleTile(item.courseId)}>
+                    <Tile tile={item.courseName} />
+                </div>
+              ))}
+          </div>
         </div>
       </div>
     </div>

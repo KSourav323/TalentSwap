@@ -1,9 +1,11 @@
 import Landing from "./pages/landing.jsx"
 import Login from "./pages/login.jsx"
 import Signup from "./pages/signup.jsx"
-import Dash from "./pages/dash.jsx";
-import Course from "./pages/course.jsx"
-import Teacher from "./pages/teacher.jsx"
+import Profile from "./pages/profile.jsx"
+import Learner from "./pages/learner.jsx";
+import Tutor from "./pages/tutor.jsx";
+import Course from "./pages/course.jsx" 
+import Manage from "./pages/manage.jsx"
 import Play from "./pages/play.jsx";
 import Notification from "./pages/notification.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx"
@@ -25,12 +27,14 @@ function App(){
               <Route path="/" element={<Landing/>} />
               <Route path="/login" element={<Login/>} />
               <Route path="/signup" element={<Signup/>} />
+              <Route path="/profile" element={<Profile/>} />
               <Route path="/search" element={<Search/>} />
-              <Route path="/teacher/:courseId" element={<Teacher/>} />
+              <Route path="/manage/:courseId" element={<Manage/>} />
               <Route path="/notification" element={<Notification/>} />
               <Route path="/course/:courseId" element={<Course/>} />
-              <Route path="/play/:lectureId" element={<Play/>} />
-              <Route path="/dash" element={<ProtectedRoute element={Dash} />} />
+              <Route path="/play/:videoId" element={<Play/>} />
+              <Route path="/learner" element={<ProtectedRoute element={Learner} />} />
+              <Route path="/tutor" element={<ProtectedRoute element={Tutor} />} />
             </Routes>
         </Router>
       </PersistGate>

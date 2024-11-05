@@ -30,7 +30,7 @@ function Signup()
             if(res.status==200) 
             {
                 dispatch(login({ name, email, password }));
-                navigate('/dash');
+                navigate('/learner');
             }
             else
             {

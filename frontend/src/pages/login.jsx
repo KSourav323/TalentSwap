@@ -10,7 +10,7 @@ function Login()
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const [name, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     function goBack() {
@@ -19,14 +19,15 @@ function Login()
 
     function handleSubmit(e) {
         e.preventDefault();
-        axios.post('http://localhost:5000/api/login', {name, password})
+        axios.post('http://localhost:5000/api/login', {email, password})
         .then(res=>{
             if(res.status===200) 
             {
-                dispatch(login({ name, email:'sourav@gmail.com', password }));
-                setUsername('');
+                console.log(res.data.user.name)
+                dispatch(login({ name:res.data.user.name, email:email, password:password }));
+                setEmail('');
                 setPassword('');
-                navigate('/dash');
+                navigate('/learner');
             }
             else
             {
@@ -35,6 +36,7 @@ function Login()
             }
         })
         .catch(err=>{
+            console.log(err)
             alert('Error')
             navigate('/login')
     })
@@ -46,13 +48,13 @@ function Login()
                 <h1>Login</h1>
                 <form onSubmit={handleSubmit}>
                     <div>
-                        <label htmlFor="name">Username</label>
+                        <label htmlFor="email">Email</label>
                         <input
                             type="text"
-                            id="name"
-                            value={name}
-                            onChange={(e) => setUsername(e.target.value)}
-                            autoComplete="name"
+                            id="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            autoComplete="email"
                             required
                         />
                     </div>
