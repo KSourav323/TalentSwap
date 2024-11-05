@@ -21,7 +21,12 @@ const courseSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-  }
+  },
+  videos: [
+    {
+      type: String
+    }
+  ],
 }, { timestamps: true });
 
 const Course = mongoose.model('Courses', courseSchema);
