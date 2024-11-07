@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import '../style/course.css'
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import Discussion from '../components/discussion';
 
 const Course = () => {
   const navigate = useNavigate();
@@ -84,7 +85,6 @@ const Course = () => {
             if(res.status===200) 
             {
                 setVideos(res.data.videos)
-                console.log(res)
             }
             else
             {
@@ -121,14 +121,12 @@ const Course = () => {
           </ul>
         </div>
         <div className='course-discussion'>
-          chats
-          <input type="text" />
+          <Discussion courseId={courseId} sender={user.email}/>
         </div>
       </div>
     </div>
   )
 }
 
-//details, videos, discussions, chat
 
 export default Course

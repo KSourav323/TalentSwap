@@ -10,7 +10,7 @@
 }
 
 .course-body{
-    background-color: rgb(38, 38, 38);
+    background-color: rgb(218, 171, 171);
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -18,10 +18,9 @@
     width: 100%;
 
     .course-videos{
-        background-color: rgb(0, 0, 0);
-        width: 60%;
-        height: 90%;
-        border-radius: 50px;
+        background-color: rgb(67, 52, 52);
+        width: 70%;
+        height: 100%;
 
         .video-ul{
             list-style-type: none;
@@ -37,13 +36,8 @@
     }
 
     .course-discussion{
-        background-color: rgb(0, 0, 0);
+        background-color: rgb(94, 53, 53);
         width: 30%;
-        height: 90%;
-        border-radius: 50px;
-        display: flex;
-        justify-content: flex-start;
-        flex-direction: column-reverse;
-        align-items: center;
+        height: 100%;
     }
 }

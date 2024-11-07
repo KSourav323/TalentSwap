@@ -12,6 +12,7 @@ function Tutor()
     const [showPopup, setShowPopup] = useState(false);
     const [newCourseName, setNewCourseName] = useState('');
     const [newCourseDesc, setNewCourseDesc] = useState('');
+    const [reload, setReload] = useState(false);
 
     const navigate = useNavigate();
 
@@ -25,6 +26,7 @@ function Tutor()
         .then(res=>{
             if(res.status===200) 
             {
+                setReload(prev => !prev);
                 setNewCourseName(''); 
                 setNewCourseDesc('');
                 setShowPopup(!showPopup);
@@ -37,6 +39,23 @@ function Tutor()
         .catch(err=>{
             alert('Error')
         })
+    }
+
+function handleDelete(item) {
+    axios.post('http://localhost:5000/api/deleteCourse', {courseId:item})
+    .then(res=>{
+        if(res.status===200) 
+        {
+            setReload(prev => !prev);
+        }
+        else
+        {
+            alert('Server error')
+        }
+    })
+    .catch(err=>{
+        alert('Error')
+    })
     }
 
     useEffect(() => {
@@ -57,7 +76,7 @@ function Tutor()
         })
         };
         getOfferedList();
-    }, []);
+    }, [reload]);
 
     return(
       <div className='tutor'>
@@ -70,8 +89,9 @@ function Tutor()
                     </div>
                     <ul>
                         {offered.map((item, index) => (
-                            <li className='tutor-li' key={index} onClick={() => handleOffered(item.courseId)}>
-                                {item.courseName}
+                            <li className='tutor-li' key={index} >
+                                <button className='tutor-course' onClick={() => handleOffered(item.courseId)}>{item.courseName}</button>
+                                <button className='tutor-del' onClick={() => handleDelete(item.courseId)}>del</button>
                             </li>
                         ))}
                     </ul>

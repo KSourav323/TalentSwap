@@ -29,7 +29,7 @@ function Signup()
         .then(res=>{
             if(res.status==200) 
             {
-                dispatch(login({ name, email, password }));
+                dispatch(login({ name:res.data.user.name, id:res.data.user.userId, email:email, password:password }));
                 navigate('/learner');
             }
             else

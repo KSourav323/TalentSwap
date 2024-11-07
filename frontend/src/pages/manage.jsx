@@ -3,6 +3,8 @@ import { useNavigate} from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import '../style/manage.css'
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+import Discussion from '../components/discussion';
 
 const Manage = () => {
   const navigate = useNavigate();
@@ -10,6 +12,9 @@ const Manage = () => {
   const [videos, setVideos] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [videoFile, setVideoFile] = useState(null);
+  const [reload, setReload] = useState(false);
+  const user = useSelector((state) => state.user.user);
+  
 
   const handleVideoChange = (e) => {
     setVideoFile(e.target.files[0]); 
@@ -39,6 +44,7 @@ const Manage = () => {
     }).then(res=>{
         if(res.status===200) 
         {
+            setReload(prev => !prev);
             setShowPopup(!showPopup);
         }
         else
@@ -49,6 +55,23 @@ const Manage = () => {
     .catch(err=>{
         alert('Error')
     })
+}
+
+function deleteVideo(item) {
+  axios.post('http://localhost:5000/api/deleteVideo', {videoId:item})
+  .then(res=>{
+      if(res.status===200) 
+      {
+          setReload(prev => !prev);
+      }
+      else
+      {
+          alert('Server error')
+      }
+  })
+  .catch(err=>{
+      alert('Error')
+  })
 }
 
   useEffect(() => {
@@ -69,7 +92,7 @@ const Manage = () => {
     })
     };
     getVideoList();
-  }, []);
+  }, [reload]);
 
 
   return (
@@ -83,16 +106,16 @@ const Manage = () => {
         <div className='manage-videos'>
           <ul className='video-ul'>
             {videos.map((item, index) => (
-                <li className='video-li' key={index} onClick={() => playVideo(item)}>
-                    {item}
+                <li className='video-li' key={index} >
+                    <button className="video-name" onClick={() => playVideo(item.videoId)}>{item.videoName}</button>
+                    <button className="video-del" onClick={() => deleteVideo(item.videoId)}>del</button>
                 </li>
             ))}
           </ul>
         </div>
 
         <div className='manage-discussion'>
-          chats
-          <input type="text" />
+          <Discussion courseId={courseId} senderId={user.id}/>
         </div>
 
         {showPopup && (

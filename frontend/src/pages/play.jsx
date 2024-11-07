@@ -7,7 +7,6 @@ import axios from 'axios';
 const Play = () => {
   const navigate = useNavigate();
   const { videoId } = useParams();
-  console.log(videoId)
 
   function goBack() {
     navigate(-1); 

@@ -2,9 +2,10 @@ const express = require('express');
 const User = require('../models/User');                     
 const Course = require('../models/Course');             
 const Video = require('../models/Video');             
+const Chat = require('../models/Chats');             
 const router = express.Router();
 const { auth } = require("../middleware/auth");
-const { generateCourseId, getVideoId }= require("../functions/utility");
+const { generateCourseId, getVideoId, generateChatId, generateUserId }= require("../functions/utility");
 const upload = require('../functions/multer');
 const path = require('path');
 const fs = require('fs');
@@ -26,7 +27,8 @@ router.post('/login', async (req, res) => {
 router.post('/signup', async (req, res) => {
   const { name, email, password } = req.body;
     try {
-      const newUser = new User({ name, email, password });
+      const userId = generateUserId();
+      const newUser = new User({ userId, name, email, password });
       const savedUser = await newUser.save();
       res.status(200).json({ message: 'message from server' });
     } 
@@ -47,17 +49,29 @@ router.post('/getCourseList', async (req, res) => {
     const offeredCourses = await Course.find({ courseId: { $in: offered } });
     const enrolledCourses = await Course.find({ courseId: { $in: enrolled } });
 
-    const offeredCoursesDetails = offeredCourses.map(course => ({
-      courseId: course.courseId,
-      courseName: course.courseName,
-    }));
+    res.status(200).json({offered:offeredCourses, enrolled:enrolledCourses, message: 'message from server' });
+  }
+  catch (error){
+    res.status(500).json({ message: error.message });
+  }
+});
 
-    const enrolledCoursesDetails = enrolledCourses.map(course => ({
-      courseId: course.courseId,
-      courseName: course.courseName,
-    }));
+router.post('/deleteCourse', async (req, res) => {
+  const { courseId } = req.body;
+  try{
+    const courseResult = await Course.deleteOne({ courseId });
 
-    res.status(200).json({offered:offeredCoursesDetails, enrolled:enrolledCoursesDetails, message: 'message from server' });
+    const userResult = await User.updateMany(
+      {}, 
+      {
+        $pull: {
+          enrolled: courseId,
+          offered: courseId
+        }
+      }
+    );
+
+    res.status(200).json({message: 'message from server' });
   }
   catch (error){
     res.status(500).json({ message: error.message });
@@ -151,8 +165,8 @@ router.post('/isEnrolled', async (req, res) => {
 router.post('/getVideoList', async (req, res) => {
   const { courseId } = req.body;
   try{
-    const course = await Course.findOne({ courseId });
-    res.status(200).json({videos:course.videos, message: 'message from server' });
+    const videos = await Video.find({ courseId });
+    res.status(200).json({videos:videos, message: 'message from server' });
   }
   catch (error){
     res.status(500).json({ message: error.message });
@@ -165,12 +179,6 @@ router.post('/addVideo', upload.single('video'), async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ message: 'No video file uploaded' });
     }
-
-    const videoFileName = req.file.filename;
-    const course = await Course.findOne({ courseId: courseId });
-    await Course.findByIdAndUpdate(course._id, {
-      $addToSet: { videos: videoFileName }
-    });
 
     const videoId = getVideoId(videoFileName);
     const videoName= 'course-video'
@@ -186,10 +194,26 @@ router.post('/addVideo', upload.single('video'), async (req, res) => {
   }
 });
 
+router.post('/deleteVideo', async (req, res) => {
+  const { videoId } = req.body;
+  try{
+    const result = await Video.deleteOne({ videoId: videoId });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: 'Video not found' });
+    }
+    res.status(200).json({message: 'message from server' });
+  }
+  catch (error){
+    console.log(error) 
+    res.status(500).json({ message: error.message });
+  }
+});
+
 router.post('/playVideo', (req, res) => {
   const { filename } = req.body;
   try{
-    const videoPath = path.join(__dirname, '..', 'videos', filename);
+    const videoPath = path.join(__dirname, '..', 'videos', `${filename}.mp4`);
     
     if (!fs.existsSync(videoPath)) {
       return res.status(404).json({ message: 'Video not found' });
@@ -203,6 +227,34 @@ router.post('/playVideo', (req, res) => {
   }
   catch (error){
     console.log(error) 
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.post('/getMessages', async (req, res) => {
+  const { courseId } = req.body;
+  try{
+    const chats = await Chat.find({ courseId });
+    res.status(200).json({chats:chats, message: 'message from server' });
+  }
+  catch (error){
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.post('/sendMessage', async (req, res) => {
+  const { courseId, senderId, message } = req.body;
+  console.log(req.body)
+  try{
+    const user = await User.findOne({ userId: senderId });
+    const chatId = generateChatId();
+    const senderName = user.name;
+    const newChat = new Chat({ chatId, courseId, senderId, senderName, message });
+    const savedChat = await newChat.save();
+    res.status(200).json({ message: 'sent' });
+  }
+  catch (error){
+    console.log(error)
     res.status(500).json({ message: error.message });
   }
 });

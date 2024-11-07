@@ -1,0 +1,51 @@
+.disc{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+}
+
+.disc-chats{
+    height: 90%;
+    width: 100%;
+}
+
+.disc-send{
+    background-color: rgb(25, 42, 42);
+    height: 10%;
+    width: 100%;
+}
+
+.chat-ul{
+    background-color: antiquewhite;
+    height: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .chat-li{
+        background-color: black;
+        list-style: none;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+
+        .chat-det{
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .chat-name{
+            font-size: 10px; 
+            color: rgb(121, 121, 121);
+        }
+
+        .chat-message{
+            font-size: 15px;
+        }
+    }
+}
