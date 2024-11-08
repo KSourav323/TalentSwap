@@ -6,7 +6,6 @@ import Learner from "./pages/learner.jsx";
 import Tutor from "./pages/tutor.jsx";
 import Course from "./pages/course.jsx" 
 import Manage from "./pages/manage.jsx"
-import Play from "./pages/play.jsx";
 import Notification from "./pages/notification.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx"
 import { store, persistor } from './redux/store';
@@ -32,7 +31,6 @@ function App(){
               <Route path="/manage/:courseId" element={<Manage/>} />
               <Route path="/notification" element={<Notification/>} />
               <Route path="/course/:courseId" element={<Course/>} />
-              <Route path="/play/:videoId" element={<Play/>} />
               <Route path="/learner" element={<ProtectedRoute element={Learner} />} />
               <Route path="/tutor" element={<ProtectedRoute element={Tutor} />} />
             </Routes>

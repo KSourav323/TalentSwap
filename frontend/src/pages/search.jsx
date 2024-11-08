@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import '../style/search.css'
 import { useNavigate} from 'react-router-dom';
-import Tile from '../components/tile';
 import Navbar from '../components/navbar.jsx';
 import axios from 'axios';
 
@@ -11,7 +10,6 @@ const Search = () => {
   const filter = 'filter1'
   
   function handleTile(item) {
-    console.log(item)
     navigate(`/course/${item}`);
   }
 
@@ -45,16 +43,15 @@ const Search = () => {
             <button>Go</button>
           </div>
         </div>
-
-        <div className='search-results'>
-          <div className='search-scrollable'>
+          <ul className='course-ul'>
             {results.map((item, index) => (
-              <div className='tile-btn' key={index} onClick={() => handleTile(item.courseId)}>
-                    <Tile tile={item.courseName} />
-                </div>
+              <div className='course-li' key={index}  onClick={() => handleTile(item.courseId)} >
+                <img src={`/images/${item.category}.jpg`} className='card-image'/>
+                <h5 className='card-name'>{item.courseName}</h5>
+                <button className='card-del' onClick={() => handleDelete(item.courseId)}>del</button>
+            </div> 
               ))}
-          </div>
-        </div>
+          </ul>
       </div>
     </div>
   )

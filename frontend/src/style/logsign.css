@@ -1,0 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=Megrim&display=swap');
+
+.log{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to top right, #676279, #676279);
+}
+
+.panel{
+    background-color: #2B2738;
+    width: 60%;
+    height: 75%;
+    border-radius: 10px;
+    transition:  box-shadow 1s ease-in-out;
+    box-shadow: 0px 15px 80px rgba(0, 0, 0, 0.65);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.left{
+    height: 100%;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.log-visual{
+    background-color: #4e3b8f;
+    height: 95%;
+    width: 94%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background:linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)),  url('/resources/wall.jpg');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat;
+    overflow: hidden;
+    box-sizing: border-box;
+    border-radius: 7px;
+    transition:  box-shadow 1s ease-in-out;
+    box-shadow: 0px 9px 20px rgba(0, 0, 0, 0.35);
+    flex-direction: column;
+    padding: 20px;
+
+    .a{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        font-family: 'Megrim';
+        font-weight: 900;
+        font-size: 30px;
+
+        button{
+            height: 26px;
+            width: 100px;
+            border-radius: 20px;
+            border: none;
+            background-color: rgba(179, 179, 179, 0.45);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    .b{
+        p{
+            font-size:28px;
+            font-weight: 5px;
+        }
+    }
+}
+
+
+.login-container{
+    height: 100%;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logbox{
+    height: 70%;
+    width: 80%;
+    .instruct{
+        font-size: 35px;
+        font-weight: 10px;
+        margin-bottom: 20px;
+    }
+}
+
+.inp{
+    width: 100%;
+    height: 40px;
+    border: none;
+    margin-bottom: 10px;
+    background-color: #3B364C;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.chk-bx{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    p{
+        font-size: 12px;
+    }
+}
+
+.inp-btn{
+    width: 100%;
+    height: 40px;
+    border: none;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    background-color: #6E54B5;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.or{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    .line{
+        height: 1.5px;
+        width: 37%;
+        background-color: #3B364C;
+    }
+    p{
+        font-size: 12px;
+        margin: 10px;
+    }
+}
+
+.goog{
+    width: 100%;
+    height: 40px;
+    border: none;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    border: solid 2px #3B364C;
+    border-radius: 5px;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

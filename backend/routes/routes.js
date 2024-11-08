@@ -3,6 +3,7 @@ const User = require('../models/User');
 const Course = require('../models/Course');             
 const Video = require('../models/Video');             
 const Chat = require('../models/Chats');             
+const Pm = require('../models/Pm');             
 const router = express.Router();
 const { auth } = require("../middleware/auth");
 const { generateCourseId, getVideoId, generateChatId, generateUserId }= require("../functions/utility");
@@ -56,6 +57,17 @@ router.post('/getCourseList', async (req, res) => {
   }
 });
 
+router.post('/getCourseDetails', async (req, res) => {
+  const { courseId } = req.body;
+  try{
+    const course = await Course.findOne({ courseId:courseId });
+    res.status(200).json({course:course, message: 'message from server' });
+  }
+  catch (error){
+    res.status(500).json({ message: error.message });
+  }
+});
+
 router.post('/deleteCourse', async (req, res) => {
   const { courseId } = req.body;
   try{
@@ -81,11 +93,7 @@ router.post('/deleteCourse', async (req, res) => {
 router.post('/getSearchResult', async (req, res) => {
   try {
     const result = await Course.find();
-    const courses = result.map(course => ({
-      courseId: course.courseId,
-      courseName: course.courseName,
-    }));
-    res.status(200).json({result:courses});
+    res.status(200).json({result:result});
   } 
   catch (error) {
     res.status(500).json({ message: error.message });
@@ -93,11 +101,11 @@ router.post('/getSearchResult', async (req, res) => {
 });
 
 router.post('/addOffered', async (req, res) => {
-  const { email, name, courseName, courseDesc } = req.body;
+  const { email, name, courseName, courseDesc, courseCat } = req.body;
   const courseId=generateCourseId();
 
   try {
-    const newCourse= new Course({ courseId, courseName, courseDesc, courseTutor:name, email });
+    const newCourse= new Course({ courseId, courseName, courseDesc, courseTutor:name, email, category:courseCat, rating:0 });
     const savedCourse = await newCourse.save();
 
     const user = await User.findOne({ email: email });
@@ -180,6 +188,7 @@ router.post('/addVideo', upload.single('video'), async (req, res) => {
       return res.status(400).json({ message: 'No video file uploaded' });
     }
 
+    const videoFileName = req.file.filename;
     const videoId = getVideoId(videoFileName);
     const videoName= 'course-video'
     const videoSequence= 1
@@ -210,7 +219,7 @@ router.post('/deleteVideo', async (req, res) => {
   }
 });
 
-router.post('/playVideo', (req, res) => {
+router.post('/playVideo', async (req, res) => {
   const { filename } = req.body;
   try{
     const videoPath = path.join(__dirname, '..', 'videos', `${filename}.mp4`);
@@ -232,10 +241,29 @@ router.post('/playVideo', (req, res) => {
 });
 
 router.post('/getMessages', async (req, res) => {
-  const { courseId } = req.body;
+  const { courseId,  } = req.body;
   try{
     const chats = await Chat.find({ courseId });
-    res.status(200).json({chats:chats, message: 'message from server' });
+    const pms = [
+      {
+        "_id": {
+          "$oid": "672d12b87bcd9896ee6c9c17"
+        },
+        "chatId": "CHAT-0ded9e9e-f4af-438d-be7e-af39bfeb05ba",
+        "courseId": "COURSE-82d28879-bad5-4c63-8ac2-8dc4cff9e52f",
+        "senderId": "USER-f966c4b5-8786-4b3b-93cc-dc059b0922fb",
+        "senderName": "sourav",
+        "message": "sddb",
+        "createdAt": {
+          "$date": "2024-11-07T19:19:20.773Z"
+        },
+        "updatedAt": {
+          "$date": "2024-11-07T19:19:20.773Z"
+        },
+        "__v": 0
+      }
+    ]
+    res.status(200).json({chats:chats, pms:pms, message: 'message from server' });
   }
   catch (error){
     res.status(500).json({ message: error.message });

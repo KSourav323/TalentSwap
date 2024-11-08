@@ -4,6 +4,7 @@ import { useNavigate} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/actions.js'
 import axios from 'axios';
+import { FcGoogle } from "react-icons/fc";
 
 function Login()
 {
@@ -42,38 +43,67 @@ function Login()
     };
 
     return(
-      <div>
-          <div className="login-container">
-                <h1>Login</h1>
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <label htmlFor="email">Email</label>
-                        <input
-                            type="text"
-                            id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            autoComplete="email"
-                            required
-                        />
+      <div className='log'>
+        <div className='panel'>
+            <div className='left'>
+                <div className='log-visual'>
+                    <div className='a'>
+                        Talent Swap
+                        <button className="go back" onClick={goBack}>Go Back 🡭</button>
                     </div>
-                    <div>
-                        <label htmlFor="password">Password</label>
-                        <input
-                            type="password"
-                            id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            autoComplete="current-password"
-                            required
-                        />
+                    <div className='b'>
+                        <p>Learn Connect Thrive</p>
                     </div>
-                    <button type="submit">Login</button>
-                </form>
+                </div>
             </div>
-          <button className="go back" onClick={goBack}>Go Back 🡭</button>
+            <div className="login-container">
+                <div className='logbox'>
+                    <form onSubmit={handleSubmit}>
+                        <p className='instruct'>Login to your account</p> 
+                        <div>
+                            <input className='inp'
+                                type="text"
+                                id="email"
+                                placeholder='Enter email'
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                autoComplete="email"
+                                required
+                            />
+                        </div>
+                        <div>
+                            <input className='inp'
+                                type="password"
+                                id="password"
+                                placeholder='Enter password'
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                autoComplete="current-password"
+                                required
+                            />
+                        </div>
+                        <label className='chk-bx'>
+                            <input type="checkbox" name="my-checkbox" value="1"/>
+                            <p> Save password?</p> 
+                        </label>
+                        <button className='inp-btn' type="submit">Login</button>
+                    </form>
+
+                    <div className='or'>
+                        <div className='line'>
+                        </div>
+                        <p>or login with</p>
+                        <div className='line'>
+                        </div>
+                    </div>
+                    <div className='goog'>
+                        <p><FcGoogle /> Google</p>
+                    </div>
+                </div>
+            </div>
+        </div>
       </div>
     )
 }
 
-export default Login
+export default Login 

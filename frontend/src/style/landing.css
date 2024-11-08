@@ -6,6 +6,7 @@
     align-items: center;
     position: relative;
     color: white;
+    background-color: #2B2738;
     flex-direction: column;
     padding-top: -20px;
 }
@@ -15,13 +16,27 @@
     justify-content: center;
     align-items: center;
     gap: 20px;
+    margin-top: 30px;
+    border: none;
 }
 .enter-btn{
-    background-color: white;
+    background-color: rgba(183, 183, 183, 0.35);
     display: flex;
     justify-content: center;
     align-items: center;
-    color: black;
+    color: rgb(255, 255, 255);
     width: 130px;
-    border-radius: 50px; 
+    border-radius: 40px; 
+    border: none;
+    height: 30px;
+    transition:  box-shadow 1s ease-in-out;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    position: relative;
+}
+
+.enter-btn:hover{
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(53, 0, 53, 0.7), 0 0 23px rgba(98, 0, 190, 0.7);
 }

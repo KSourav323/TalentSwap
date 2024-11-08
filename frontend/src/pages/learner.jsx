@@ -1,4 +1,4 @@
-import '../style/learner.css'
+import '../style/clist.css'
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Navbar from '../components/navbar.jsx';
@@ -33,19 +33,21 @@ function Learner()
         })
         };
         getOfferedList();
-    }, []);
+    }, [enrolled]);
 
     return(
-      <div className='learner'>
+      <div className='clist'>
         <Navbar/> 
-        <div className='learner-body'>
-            <div className='learner-part'>
-                <h2>Enrolled courses</h2>
-                <ul>
+        <div className='clist-body'>
+            <div className='clist-part'>
+                <div className='clist-nav'>
+                    <h2>Enrolled courses</h2>
+                </div>
+                <ul className='course-ul'>
                     {enrolled.map((item, index) => (
-                        <li className='learner-li' key={index} onClick={() => handleEnrolled(item.courseId)}>
-                            {item.courseName}
-                        </li>
+                        <div className='clist-li' key={index} onClick={() => handleEnrolled(item.courseId)}>
+                            <h5>{item.courseName}</h5>
+                        </div>
                     ))}
                 </ul>
             </div>

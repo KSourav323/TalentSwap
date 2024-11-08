@@ -11,14 +11,22 @@ const Profile = () => {
     <div className='profile'>
         <Navbar/>
         <div className="profile-body">
-          <div className='profile-dp'>
-              DP
-          </div>
-          <div className='profile-details'>
-              <p>Name: {user.name}</p>
-              <p>Age: 23</p>
-              <p>Email: dfsd@sdf.com</p>
-              <p>Ph number: 8787678877</p>
+          <div className='profile-card'>
+            <div className='profile-dp'>
+                DP
+            </div>
+            <div className='vline'></div>
+            <div className='profile-details'>
+              <div className='a'>
+                <p>Name: {user.name}</p>
+                <p>Age: 23</p>
+              </div>
+              <div className='hline'></div>
+                <div className='a'>
+                  <p>Email: dfsd@sdf.com</p>
+                  <p>Ph number: 8787678877</p>
+                </div>
+            </div>
           </div>
         </div>
     </div>

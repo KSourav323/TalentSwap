@@ -22,11 +22,14 @@ const courseSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  videos: [
-    {
-      type: String
-    }
-  ],
+  category: {
+    type: String,
+    required: true,
+  },
+  rating: {
+    type: Number,
+    required: true,
+  },
 }, { timestamps: true });
 
 const Course = mongoose.model('Courses', courseSchema);
