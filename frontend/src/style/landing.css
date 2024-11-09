@@ -1,17 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Megrim&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" );
+
+
 .landing {
     display: flex;
     height: 100%;
-    width: 55%;
+    width: 100%;
     justify-content: center;
     align-items: center;
     position: relative;
     color: white;
-    background-color: #2B2738;
+    background: linear-gradient(to top right, #280345, #544c6d);
     flex-direction: column;
     padding-top: -20px;
 }
 
-.buttons{
+.body {
+    height: 100%;
+    width: 55%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.body .title {
+    font-family: 'Megrim', cursive;
+    color: transparent;
+    font-size: 70px;
+    background: linear-gradient(90deg, #ff00ff, #00ffff, #ff00ff);
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: gradientCycle 3s linear infinite;
+    position: relative;
+    background-size: 1000% 1000%;
+}
+
+.body p {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    text-align: justify;
+    line-height: 1.5; 
+}
+
+@keyframes gradientCycle {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+.buttons {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,24 +65,25 @@
     margin-top: 30px;
     border: none;
 }
-.enter-btn{
+
+.enter-btn {
     background-color: rgba(183, 183, 183, 0.35);
     display: flex;
     justify-content: center;
     align-items: center;
     color: rgb(255, 255, 255);
     width: 130px;
-    border-radius: 40px; 
+    border-radius: 40px;
     border: none;
     height: 30px;
-    transition:  box-shadow 1s ease-in-out;
-    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.35);
+    transition: box-shadow 0.3s ease-in-out;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.35); 
     cursor: pointer;
     transition: transform 0.3s ease;
     position: relative;
 }
 
-.enter-btn:hover{
-    transform: scale(1.1);
-    box-shadow: 0 0 10px rgba(53, 0, 53, 0.7), 0 0 23px rgba(98, 0, 190, 0.7);
+.enter-btn:hover {
+    transform: scale(0.9);
+    box-shadow: 0 0 20px rgba(104, 0, 99, 0.7), 0 0 30px rgba(0, 0, 0, 0.7);
 }

@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import Navbar from '../components/navbar.jsx';
 import { useNavigate} from 'react-router-dom';
 import axios from 'axios';
+import { MdOutlineStar } from "react-icons/md";
 
 function Learner()
 {
@@ -45,9 +46,16 @@ function Learner()
                 </div>
                 <ul className='course-ul'>
                     {enrolled.map((item, index) => (
-                        <div className='clist-li' key={index} onClick={() => handleEnrolled(item.courseId)}>
-                            <h5>{item.courseName}</h5>
-                        </div>
+                        <div className='clist-li' key={index}  onClick={() => handleEnrolled(item.courseId)} >
+                            <img src={`/images/${item.category}.jpg`} className='card-image' loading="lazy" />
+                            <div className="card-text">
+                                    <div className='det'>
+                                        <p className='card-name'>{item.courseName}</p>
+                                        <p className='card-info'>By {item.courseTutor}</p> 
+                                        <p className='card-info'>4.5<MdOutlineStar />/5</p> 
+                                    </div>
+                                </div>
+                        </div> 
                     ))}
                 </ul>
             </div>

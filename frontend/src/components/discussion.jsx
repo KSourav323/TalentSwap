@@ -3,6 +3,7 @@ import '../style/disc.css'
 import axios from 'axios';
 import Timestamp from './timestamp';
 import { useSelector } from 'react-redux';
+import { IoIosSend } from "react-icons/io";
 
 const Discussion = (item) => {
     const [message, setMessage] = useState('');
@@ -100,7 +101,7 @@ const Discussion = (item) => {
                     </ul>
                 </div>
                 <div className='disc-send'>
-                    <input
+                    <input className='sendinp'
                         type="text"
                         id="message"
                         value={message}
@@ -108,7 +109,7 @@ const Discussion = (item) => {
                         autoComplete="message"
                         required
                     />
-                    <button className='disc-btn' onClick={() => handleSend()}>Send</button>
+                    <button className='disc-btn' onClick={() => handleSend()}><IoIosSend className='sendbtn'/></button>
                 </div>
             </div>
         ) : (
@@ -127,7 +128,7 @@ const Discussion = (item) => {
                     </ul>
                 </div>
                 <div className='disc-send'>
-                    <input
+                    <input className='sendinp'
                         type="text"
                         id="direct"
                         value={direct}
@@ -135,7 +136,7 @@ const Discussion = (item) => {
                         autoComplete="direct"
                         required
                     />
-                    <button className='disc-btn' onClick={() => handlePm()}>Send</button>
+                    <button className='disc-btn' onClick={() => handlePm()}><IoIosSend className='sendbtn'/></button>
                 </div>
             </div>
         )}

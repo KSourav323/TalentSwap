@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux';
 import Navbar from '../components/navbar.jsx';
 import { useNavigate} from 'react-router-dom';
 import axios from 'axios';
+import { MdOutlineStar } from "react-icons/md";
+import { MdOutlineDeleteSweep } from "react-icons/md";
 
 
 function Tutor()
@@ -88,14 +90,22 @@ function handleDelete(item) {
                 <div className='clist-part'>
                     <div className='clist-nav'>
                         <h2>Offered courses</h2>
-                        <button className='clist-edit' onClick={() => setShowPopup(!showPopup)}>Add Course +</button>
+                        <button className='clist-edit' onClick={() => setShowPopup(!showPopup)}>Add Course</button>
                     </div>
                     <ul className='course-ul'>
                         {offered.map((item, index) => (
                             <div className='clist-li' key={index}  onClick={() => handleOffered(item.courseId)} >
-                                <img src={`/images/${item.category}.jpg`} className='card-image'/>
-                                <h5 className='card-name'>{item.courseName}</h5>
-                                <button className='card-del' onClick={() => handleDelete(item.courseId)}>del</button>
+                                <img src={`/images/${item.category}.jpg`} className='card-image' loading="lazy" />
+                                <div className="card-text">
+                                    <div className='det'>
+                                        <p className='card-name'>{item.courseName}</p>
+                                        <p className='card-info'>By {item.courseTutor}</p> 
+                                        <p className='card-info'>4.5<MdOutlineStar />/5</p> 
+                                    </div>
+                                    <div className='delspace'>
+                                        <MdOutlineDeleteSweep className='card-del' onClick={(e) => {e.stopPropagation(); handleDelete(item.courseId)}}/>
+                                    </div>
+                                </div>
                             </div> 
                         ))}
                     </ul>

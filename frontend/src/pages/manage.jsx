@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import Discussion from '../components/discussion';
 import Play from '../components/play.jsx';
+import { MdOutlineDeleteOutline } from "react-icons/md";
 
 const Manage = () => {
   const navigate = useNavigate();
@@ -123,7 +124,7 @@ function deleteVideo(item) {
   return (
     <div className='manage'>
       <div className='manage-head'>
-        {courseDetails.courseName} videos
+        {courseDetails.courseName}
         <button className="add-video" onClick={() => setShowPopup(!showPopup)}>Add video</button>
         <button className="go-back" onClick={goBack}>Go Back 🡭</button>
       </div>
@@ -133,7 +134,7 @@ function deleteVideo(item) {
             {videos.map((item, index) => (
                 <li className='video-li' key={index} >
                     <button className="video-name" onClick={() => playVideo(item)}>{item.videoName}</button>
-                    <button className="video-del" onClick={() => deleteVideo(item.videoId)}>del</button>
+                    <button className="video-del" onClick={() => deleteVideo(item.videoId)}><MdOutlineDeleteOutline className='bin'/></button>
                 </li>
             ))}
           {showPlay && (

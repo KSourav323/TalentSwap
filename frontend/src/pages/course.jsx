@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import Discussion from '../components/discussion';
 import Play from '../components/play.jsx';
+import { IoCheckmark } from "react-icons/io5";
 
 const Course = () => {
   const navigate = useNavigate();
@@ -129,9 +130,9 @@ const Course = () => {
       <div className='course-head'>
         {courseDetails.courseName} videos
         {isEnrolled ? (
-            <button onClick={() =>handleUnenroll()}>Unenroll</button>
+            <button className='y' onClick={() =>handleUnenroll()}>Enrolled <IoCheckmark className='tick'/></button>
           ) : (
-            <button onClick={() =>handleEnroll()}>Enroll</button>
+            <button className='n' onClick={() =>handleEnroll()}>Enroll</button>
           )}
         <button className="go-back" onClick={goBack}>Go Back 🡭</button>
       </div>

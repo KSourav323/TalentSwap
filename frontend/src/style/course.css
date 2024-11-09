@@ -4,63 +4,98 @@
 }
 
 .course-head{
-    background-color: rgb(24, 24, 24);
     width: 100%;
-    height: 8%;
+    height: 9%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: #2B2738;
+    padding-inline: 10px;
+
+    .y{
+        width: 100px;
+        height: 30px;
+        border: none;
+        background-color: #20c51d;
+        border-radius: 5px;
+        padding: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .n{
+        width: 100px;
+        height: 30px;
+        border: none;
+        background-color: #6E54B5;
+        border-radius: 5px;
+        padding: 5px;
+    }
+
+    .tick{
+        font-size: 15px;
+        margin-left: 5px;
+    }
 }
 
 .course-body{
-    background-color: rgb(38, 38, 38);
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    height: 92%;
+    height: 91%;
     width: 100%;
 
     .course-videos{
-        background-color: rgb(0, 0, 0);
         width: 70%;
         height: 100%;
         display: flex;
         justify-content: flex-start;
-        align-items:center ;
+        align-items: center;
         flex-direction: column;
-
-        .video-ul{
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            gap: 10px;
-            padding-top: 10px;
-            position: relative;
-        }
-
-        .video-li{
-            background-color: rgb(60, 60, 60);
-            list-style: none;
-            height: 60px;
-            width: 95%;
-            border-radius: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
     }
 
-    .course-discussion{
-        background-color: rgb(0, 0, 0);
-        width: 30%;
-        height: 100%;
+     
+    .video-ul {
         display: flex;
+        flex-direction: column;
         justify-content: flex-start;
         align-items: center;
-        flex-direction: column-reverse  ;
+        width: 100%;
+        height: 100%;
+        max-height: 100%; 
+        gap: 10px;
+        padding-top: 10px;
+        overflow-y: auto; 
+        padding-inline: 5px;
+        scrollbar-width: thin;
+    }
+    
+
+    .video-li {
+        background-color: #2B2738;
+        list-style: none;
+        height: 100px;
+        width: 98%;
+        border-radius: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-inline: 20px;
+        transition: transform 0.3s ease;
+        flex-shrink: 0;
+    }
+    
+    .video-li:hover {
+        transform: scale(0.98);
+    }
+    
+    .video-name {
+        height: 100%;
+        width: 90%;
+        background: none;
+        border: none;
+        color: white;
     }
 }
 
@@ -88,4 +123,13 @@
     background-color: rgb(141, 213, 70);
     width: 60px;
     height: 60px;
+}
+
+.course-discussion{
+    width: 30%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column-reverse  ;
 }
