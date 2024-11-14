@@ -1,5 +1,5 @@
 import { createStore, combineReducers } from 'redux';
-import { userReducer, navReducer } from './reducers';
+import { userReducer } from './reducers';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
@@ -11,7 +11,6 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   user: userReducer,
-  nav: navReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

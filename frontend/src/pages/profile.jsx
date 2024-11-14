@@ -9,7 +9,7 @@ const Profile = () => {
 
   return (
     <div className='profile'>
-        <Navbar/>
+        <Navbar page={'profile'}/>
         <div className="profile-body">
           <div className='profile-card'>
             <div className='profile-dp'>

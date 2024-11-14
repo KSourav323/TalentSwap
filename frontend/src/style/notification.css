@@ -6,12 +6,22 @@
     align-items: center;
 
     .noti-body{
-        background-color: black;
         display: flex;
         justify-content: center;
-        flex-direction: column;
         align-items: center;
         width: 100%;
         height: 100%;
+    }
+
+    .list{
+        background-color: rgb(255, 255, 255);
+        height: 100%;
+        width: 60%;
+    }
+
+    .box{
+        background-color: #998eb9;
+        height: 100%;
+        width: 40%;
     }
 }

@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import Discussion from '../components/discussion';
 import Play from '../components/play.jsx';
 import { IoCheckmark } from "react-icons/io5";
+import { AiFillCloseCircle } from "react-icons/ai";
 
 const Course = () => {
   const navigate = useNavigate();
@@ -148,7 +149,7 @@ const Course = () => {
             <div className='video-popup'>
               <div className='video-nav'>
                 <h2>{videoDetails.videoName} now playing...</h2>
-                <button className='close-btn' onClick={()=> setShowPlay(!showPlay)}>X</button>
+                <AiFillCloseCircle className='close-btn' onClick={()=> setShowPlay(!showPlay)} />
               </div>
               <Play videoDetails={videoDetails}/>
                 

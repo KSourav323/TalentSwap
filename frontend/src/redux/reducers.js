@@ -1,13 +1,10 @@
-import { LOGIN, LOGOUT, SET_ACTIVE_NAV } from './actions';
+import { LOGIN, LOGOUT } from './actions';
 
 const initialState = {
     isLoggedIn: false,
     user: null,
 };
 
-const initialPage = {
-    activeNavItem: 'learner',
-  };
 
 export const userReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -27,15 +24,3 @@ export const userReducer = (state = initialState, action) => {
             return state;
     }
 };
-
-export const navReducer = (state = initialPage, action) => {
-    switch (action.type) {
-      case 'SET_ACTIVE_NAV':
-        return {
-          ...state,
-          activeNavItem: action.payload,
-        };
-      default:
-        return state;
-    }
-  };

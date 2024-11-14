@@ -27,6 +27,7 @@
         justify-content: flex-start;
         align-items: center;
         flex-direction: column;
+        position: relative;
     }
     
     .video-ul {
@@ -42,11 +43,12 @@
         overflow-y: auto; 
         padding-inline: 5px;
         scrollbar-width: thin;
+        
     }
     
 
     .video-li {
-        background-color: #2B2738;
+        background:linear-gradient(to left, #6E54B5, #383349);
         list-style: none;
         height: 100px;
         width: 98%;
@@ -114,7 +116,7 @@
 }
 
 .close-btn{
-    background-color: rgb(141, 213, 70);
+    background: none;
     width: 60px;
     height: 60px;
 }

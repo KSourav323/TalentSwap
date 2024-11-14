@@ -85,7 +85,7 @@ function handleDelete(item) {
 
     return(
       <div className='clist'>
-        <Navbar/> 
+        <Navbar page={'tutor'}/> 
         <div className='clist-body'>
                 <div className='clist-part'>
                     <div className='clist-nav'>
@@ -100,7 +100,7 @@ function handleDelete(item) {
                                     <div className='det'>
                                         <p className='card-name'>{item.courseName}</p>
                                         <p className='card-info'>By {item.courseTutor}</p> 
-                                        <p className='card-info'>4.5<MdOutlineStar />/5</p> 
+                                        <p className='card-info'>4.5<MdOutlineStar className='star'/>/5</p> 
                                     </div>
                                     <div className='delspace'>
                                         <MdOutlineDeleteSweep className='card-del' onClick={(e) => {e.stopPropagation(); handleDelete(item.courseId)}}/>

@@ -31,7 +31,7 @@ router.post('/signup', async (req, res) => {
       const userId = generateUserId();
       const newUser = new User({ userId, name, email, password });
       const savedUser = await newUser.save();
-      res.status(200).json({ message: 'message from server' });
+      res.status(200).json({ user:savedUser, message: 'message from server' });
     } 
     catch (error) {
       console.log(error)
@@ -92,6 +92,8 @@ router.post('/deleteCourse', async (req, res) => {
 
 router.post('/getSearchResult', async (req, res) => {
   try {
+    const {filter} = req.body
+    console.log(filter)
     const result = await Course.find();
     res.status(200).json({result:result});
   } 

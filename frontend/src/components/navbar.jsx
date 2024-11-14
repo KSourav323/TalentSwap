@@ -1,19 +1,16 @@
 import React,  { useState } from 'react'
 import '../style/navbar.css'
 import { useNavigate} from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { logout } from '../redux/actions.js'
-import { setActiveNav } from '../redux/actions';
 
-const Navbar = () => {
+const Navbar = (item) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   
-  const activeNavItem = useSelector((state) => state.nav.activeNavItem);
+  const activeNavItem = item.page
 
-  const handleClick = (route, id) => {
-    dispatch(setActiveNav(id));
+  const handleClick = (route) => {
     navigate(route);
   };
   
@@ -30,23 +27,23 @@ const Navbar = () => {
         </div>
         <br />
         <div className='nav-navigate'>
-          <button className={`nav-opt ${activeNavItem === 'profile' ? 'active' : ''}`} onClick={() => handleClick('/profile', 'profile')}>Profile</button>
+          <button className={`nav-opt ${activeNavItem === 'profile' ? 'active' : ''}`} onClick={() => handleClick('/profile')}>Profile</button>
           <div className={`nav-btn ${activeNavItem === 'profile' ? 'glow' : ''}`}></div>
         </div>
         <div className='nav-navigate'>
-          <button className={`nav-opt ${activeNavItem === 'learner' ? 'active' : ''}`} onClick={() => handleClick('/learner', 'learner')}>Learner</button>
+          <button className={`nav-opt ${activeNavItem === 'learner' ? 'active' : ''}`} onClick={() => handleClick('/learner')}>Learner</button>
           <div className={`nav-btn ${activeNavItem === 'learner' ? 'glow' : ''}`}></div>
         </div>
         <div className='nav-navigate'>
-          <button className={`nav-opt ${activeNavItem === 'tutor' ? 'active' : ''}`} onClick={() => handleClick('/tutor', 'tutor')}>Tutor</button>
+          <button className={`nav-opt ${activeNavItem === 'tutor' ? 'active' : ''}`} onClick={() => handleClick('/tutor')}>Tutor</button>
           <div className={`nav-btn ${activeNavItem === 'tutor' ? 'glow' : ''}`}></div>
         </div>
         <div className='nav-navigate'>
-          <button className={`nav-opt ${activeNavItem === 'search' ? 'active' : ''}`} onClick={() => handleClick('/search', 'search')}>Explore</button>
+          <button className={`nav-opt ${activeNavItem === 'search' ? 'active' : ''}`} onClick={() => handleClick('/search')}>Explore</button>
           <div className={`nav-btn ${activeNavItem === 'search' ? 'glow' : ''}`}></div>
         </div>
         <div className='nav-navigate'>
-          <button className={`nav-opt ${activeNavItem === 'notification' ? 'active' : ''}`} onClick={() => handleClick('/notification', 'notification')}>Notification</button>
+          <button className={`nav-opt ${activeNavItem === 'notification' ? 'active' : ''}`} onClick={() => handleClick('/notification')}>Notification</button>
           <div className={`nav-btn ${activeNavItem === 'notification' ? 'glow' : ''}`}></div>
         </div>
       </div>

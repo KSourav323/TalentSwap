@@ -8,6 +8,9 @@ h2{
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    h2{
+        color: #2B2738;
+    }
 }
 
 .clist-body{
@@ -170,4 +173,9 @@ h2{
     margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 4px;
+}
+
+
+.star{
+    color: rgb(251, 255, 0);
 }

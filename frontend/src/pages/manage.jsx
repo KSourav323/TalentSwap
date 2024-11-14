@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import Discussion from '../components/discussion';
 import Play from '../components/play.jsx';
 import { MdOutlineDeleteOutline } from "react-icons/md";
+import { AiFillCloseCircle } from "react-icons/ai";
 
 const Manage = () => {
   const navigate = useNavigate();
@@ -124,7 +125,7 @@ function deleteVideo(item) {
   return (
     <div className='manage'>
       <div className='manage-head'>
-        {courseDetails.courseName}
+        <p className='t'>{courseDetails.courseName}</p>
         <button className="add-video" onClick={() => setShowPopup(!showPopup)}>Add video</button>
         <button className="go-back" onClick={goBack}>Go Back 🡭</button>
       </div>
@@ -141,7 +142,7 @@ function deleteVideo(item) {
             <div className='video-popup'>
               <div className='video-nav'>
                 <h2>{videoDetails.videoName} now playing...</h2>
-                <button className='close-btn' onClick={()=> setShowPlay(!showPlay)}>X</button>
+                <AiFillCloseCircle className='close-btn' onClick={()=> setShowPlay(!showPlay)} />
               </div>
               <Play videoDetails={videoDetails}/>
                 

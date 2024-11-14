@@ -9,40 +9,48 @@ import { CiSearch } from "react-icons/ci";
 const Search = () => {
   const navigate = useNavigate();
   const [results, setResults] = useState([]);
-  const filter = 'filter1'
+  const [filter, setFilter] = useState('');
   
   function handleTile(item) {
     navigate(`/course/${item}`);
   }
 
-  useEffect(() => {
-    async function getSearchResult() {
-        axios.post('http://localhost:5000/api/getSearchResult', {filter:filter})
-        .then(res=>{
-            if(res.status===200) 
-            {
-                setResults(res.data.result)
-            }
-            else
-            {
-                alert('Server error')
-            }
-        })
-        .catch(err=>{
-            alert('Error')
+  const getSearchResult = async (filter) =>  {
+    axios.post('http://localhost:5000/api/getSearchResult', {filter:filter})
+    .then(res=>{
+        if(res.status===200) 
+        {
+            setResults(res.data.result)
+            setFilter('')
+        }
+        else
+        {
+            alert('Server error')
+        }
     })
-    };
+    .catch(err=>{
+        alert('Error')
+  })
+  };
+
+  useEffect(() => {
     getSearchResult();
   }, []);
 
   return (
     <div className='search'>
-      <Navbar/>
+      <Navbar page={'search'}/>
       <div className='search-body'>
         <div className='search-div'>
           <div className="search-pill">
-            <input type="text" />
-            <button><CiSearch className='searchbtn'/></button>
+            <input 
+              type="text" 
+              placeholder='Search for a course'
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              autoComplete="filter"
+            />
+            <button onClick={(e)=>{e.preventDefault; getSearchResult(filter)}}><CiSearch className='searchbtn'/></button>
           </div>
         </div>
           <ul className='course-ul'>
@@ -53,7 +61,7 @@ const Search = () => {
                       <div className='det'>
                           <p className='card-name'>{item.courseName}</p>
                           <p className='card-info'>By {item.courseTutor}</p> 
-                          <p className='card-info'>4.5<MdOutlineStar />/5</p> 
+                          <p className='card-info'>4.5<MdOutlineStar className='star'/>/5</p> 
                       </div>
                   </div>
             </div> 
