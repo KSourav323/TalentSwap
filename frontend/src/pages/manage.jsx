@@ -8,6 +8,7 @@ import Discussion from '../components/discussion';
 import Play from '../components/play.jsx';
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { AiFillCloseCircle } from "react-icons/ai";
+import Timestamp from '../components/timestamp'; 
 
 const Manage = () => {
   const navigate = useNavigate();
@@ -19,11 +20,21 @@ const Manage = () => {
   const [showPlay, setShowPlay] = useState(false);
   const [videoDetails, setVideoDetails] = useState([]);
   const [courseDetails, setCourseDetails] = useState([]);
+  const [videoName, setVideoName] = useState('');
+  const [videoSequence, setVideoSequence] = useState(1);
   const user = useSelector((state) => state.user.user);
   
 
   const handleVideoChange = (e) => {
     setVideoFile(e.target.files[0]); 
+  };
+
+  const handleNameChange = (e) => {
+    setVideoName(e.target.value);
+  };
+
+  const handleSequenceChange = (e) => {
+    setVideoSequence(e.target.value);
   };
 
   function goBack() {
@@ -41,8 +52,8 @@ const Manage = () => {
     const formData = new FormData();  
     formData.append('video', videoFile);  
     formData.append('courseId', courseId);  
-    formData.append('videoName', 'My Video Title'); 
-    formData.append('videoSequence', 1);
+    formData.append('videoName', videoName); 
+    formData.append('videoSequence', videoSequence);
 
     axios.post('http://localhost:5000/api/addVideo', formData, {
       headers: {
@@ -52,6 +63,9 @@ const Manage = () => {
         if(res.status===200) 
         {
             setReload(prev => !prev);
+            setVideoFile(null);
+            setVideoName('');
+            setVideoSequence('');
             setShowPopup(!showPopup);
         }
         else
@@ -133,9 +147,17 @@ function deleteVideo(item) {
         <div className='manage-videos'>
           <ul className='video-ul'>
             {videos.map((item, index) => (
-                <li className='video-li' key={index} >
-                    <button className="video-name" onClick={() => playVideo(item)}>{item.videoName}</button>
-                    <button className="video-del" onClick={() => deleteVideo(item.videoId)}><MdOutlineDeleteOutline className='bin'/></button>
+                <li className='video-li' key={index} onClick={() => playVideo(item)} >
+                    <div className='video-thumb'>
+                    </div>
+                    <div className='video-det'>
+                      <p className="video-name" >{item.videoName}</p>
+                      <Timestamp timestamp={item.createdAt}/>
+                    </div>
+                    <button className="video-del" onClick={(e) => {e.stopPropagation(); deleteVideo(item.videoId);}}><MdOutlineDeleteOutline className='bin'/></button>
+                    <div className='video-seq'>
+                      <p>{item.videoSequence}</p>
+                    </div>
                 </li>
             ))}
           {showPlay && (
@@ -158,12 +180,32 @@ function deleteVideo(item) {
         {showPopup && (
                 <div className='popup'>
                     <div className='popup-content'>
-                        <h2>Add a New Video</h2>
+                      <div className="rate-nav">
+                          <h2>Add a New Video</h2>
+                          <AiFillCloseCircle className='rate-close-btn' onClick={()=> setShowPopup(!showPopup)} />
+                      </div>
                         <form onSubmit={addVideo}>
-                          <input type="file" accept="video/*" onChange={handleVideoChange} /> 
+                        <input 
+                            type="text" 
+                            placeholder="Video name" 
+                            value={videoName}
+                            onChange={handleNameChange}
+                          />
+                          <label>Sequence number:</label>
+                          <input 
+                            type="number" 
+                            placeholder="Sequence number" 
+                            value={videoSequence}
+                            onChange={handleSequenceChange}
+                          />
+                          <input 
+                            type="file" 
+                            accept="video/*" 
+                            onChange={handleVideoChange} 
+                          /> 
+
                           <button type="submit">Upload</button>
-                      </form>
-                        <button onClick={()=> setShowPopup(!showPopup)}>X</button>
+                        </form>
                     </div>
                 </div>
             )}

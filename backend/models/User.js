@@ -6,14 +6,27 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  name: {
+  fname: {
     type: String,
     required: true,
+  },
+  lname: {
+    type: String,
   },
   email: {
     type: String,
     required: true,
     unique: true,
+  },
+  roll: {
+    type: String,
+    required: true,
+  },
+  mobile: {
+    type: String,
+  },
+  language: {
+    type: String,
   },
   password: {
     type: String,

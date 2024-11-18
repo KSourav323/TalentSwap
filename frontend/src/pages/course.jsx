@@ -9,6 +9,7 @@ import Play from '../components/play.jsx';
 import { IoCheckmark } from "react-icons/io5";
 import { AiFillCloseCircle } from "react-icons/ai";
 import StarRatings from 'react-star-ratings';
+import Timestamp from '../components/timestamp'; 
 
 const Course = () => {
   const navigate = useNavigate();
@@ -192,7 +193,16 @@ const Course = () => {
           <ul className='video-ul'>
             {videos.map((item, index) => (
                 <li className='video-li' key={index} onClick={() => playVideo(item)}>
+                  <div className='video-thumb'>
+
+                  </div>
+                  <div className='video-det'>
                     <p className="video-name" >{item.videoName}</p>
+                    <Timestamp timestamp={item.createdAt}/>
+                  </div>
+                  <div className='video-seq'>
+                    <p>{item.videoSequence}</p>
+                  </div>
                 </li>
             ))}
             {showPlay && (

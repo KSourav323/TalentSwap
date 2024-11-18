@@ -1,4 +1,5 @@
 import React from 'react'
+import { BiBorderRadius } from 'react-icons/bi';
 
 const Timestamp = (item) => {
 
@@ -10,8 +11,19 @@ const Timestamp = (item) => {
         minute: '2-digit',
         hour12: true
       });
+
+      const styles = {
+        color: '#4a4a4a',  
+        fontSize: '10px',    
+        fontFamily: 'Arial, sans-serif',
+        backgroundColor:'black',
+        width: 'fit-content',
+        padding: '5px',
+        borderRadius: '6px'
+      };
+
     return (
-        <p className='chat-name'>{formattedTime} | {formattedDate}</p>
+        <p style={styles} className='ts'>{formattedTime} | {formattedDate}</p>
     )
 }
 

@@ -24,7 +24,7 @@ function Login()
         .then(res=>{
             if(res.status===200) 
             {
-                dispatch(login({ name:res.data.user.name, id:res.data.user.userId, email:email, password:password }));
+                dispatch(login({ name:res.data.user.fname, id:res.data.user.userId, email:email, password:password }));
                 setEmail('');
                 setPassword('');
                 navigate('/learner');

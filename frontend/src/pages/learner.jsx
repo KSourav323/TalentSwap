@@ -34,7 +34,7 @@ function Learner()
         })
         };
         getOfferedList();
-    }, [enrolled]);
+    }, []);
 
     return(
       <div className='clist'>

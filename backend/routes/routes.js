@@ -30,12 +30,60 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/signup', async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, roll } = req.body;
     try {
       const userId = generateUserId();
-      const newUser = new User({ userId, name, email, password });
+      const fname = name
+      const lname = ''
+      const mobile = ''
+      const language = ''
+      const newUser = new User({ userId, fname, lname, email, roll, mobile, language, password });
       const savedUser = await newUser.save();
       res.status(200).json({ user:savedUser, message: 'message from server' });
+    } 
+    catch (error) {
+      console.log(error)
+      res.status(400).json({ message: error.message });
+    }
+ 
+});
+
+router.post('/getProfile', async (req, res) => {
+  const { userId } = req.body;
+    try {
+      const profile = await User.findOne({ userId:userId });
+      res.status(200).json({ profile:profile, message: 'message from server' });
+    } 
+    catch (error) {
+      console.log(error)
+      res.status(400).json({ message: error.message });
+    }
+ 
+});
+
+router.post('/updateProfile', async (req, res) => {
+  const { userId, fname, lname, email, roll, mobile, language, password } = req.body;
+    try {
+      const user = await User.findOne({ userId });
+      if (password == user.password){
+        const updatedUser = await User.findOneAndUpdate(
+          { userId: userId },
+          {
+            fname:fname,
+            lname: lname,
+            email: email,
+            roll:roll,
+            mobile:mobile,
+            language:language,
+            password:password
+          },
+        );
+        res.status(200).json({ message: 'message from server' });
+      }
+      else{
+        res.status(201).json({ message: 'message from server' });
+      }
+      
     } 
     catch (error) {
       console.log(error)
@@ -81,8 +129,8 @@ router.post('/deleteCourse', async (req, res) => {
       {}, 
       {
         $pull: {
-          enrolled: courseId,
-          offered: courseId
+          enrolledCourses: courseId,
+          teachingCourses: courseId
         }
       }
     );
@@ -107,11 +155,11 @@ router.post('/getSearchResult', async (req, res) => {
 });
 
 router.post('/addOffered', async (req, res) => {
-  const { email, name, courseName, courseDesc, courseCat } = req.body;
+  const { email, name, tutorId, courseName, courseDesc, courseCat } = req.body;
   const courseId=generateCourseId();
 
   try {
-    const newCourse= new Course({ courseId, courseName, courseDesc, courseTutor:name, email, category:courseCat, rating:0 });
+    const newCourse= new Course({ courseId, courseName, courseDesc, courseTutor:name, tutorId:tutorId, email, category:courseCat, rating:0 });
     const savedCourse = await newCourse.save();
 
     const user = await User.findOne({ email: email });
@@ -188,7 +236,7 @@ router.post('/getVideoList', async (req, res) => {
 });
 
 router.post('/addVideo', upload.single('video'), async (req, res) => {
-  const { courseId } = req.body;
+  const { courseId, videoName, videoSequence } = req.body;
   try{
     if (!req.file) {
       return res.status(400).json({ message: 'No video file uploaded' });
@@ -196,8 +244,6 @@ router.post('/addVideo', upload.single('video'), async (req, res) => {
 
     const videoFileName = req.file.filename;
     const videoId = getVideoId(videoFileName);
-    const videoName= 'course-video'
-    const videoSequence= 1
     const newVideo= new Video({ videoId, courseId, videoName, videoSequence });
     const savedVideo = await newVideo.save();
 
@@ -262,7 +308,7 @@ router.post('/sendMessage', async (req, res) => {
   try{
     const user = await User.findOne({ userId: senderId });
     const chatId = generateChatId();
-    const senderName = user.name;
+    const senderName = user.fname;
     const newChat = new Chat({ chatId, courseId, senderId, senderName, message });
     const savedChat = await newChat.save();
     res.status(200).json({ message: 'sent' });
@@ -324,7 +370,6 @@ router.post('/rate', async (req, res) => {
     const totalRatings = courseRatings.length;
     const sumRatings = courseRatings.reduce((sum, current) => sum + current.rating, 0);
     const averageRating = totalRatings > 0 ? sumRatings / totalRatings : 0;
-    console.log(courseRatings, totalRatings, sumRatings, averageRating)
 
     const course = await Course.findOne({ courseId });
     if (course) {

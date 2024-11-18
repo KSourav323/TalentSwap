@@ -14,13 +14,13 @@ const courseSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  courseTutor: {
+  tutorId: {
     type: String,
     required: true
   },
-  email: {
+  courseTutor: {
     type: String,
-    required: true,
+    required: true
   },
   category: {
     type: String,

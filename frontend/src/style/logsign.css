@@ -53,6 +53,7 @@
         justify-content: space-between;
         align-items: center;
         width: 100%;
+        height: fit-content;
         font-family: 'Megrim';
         font-weight: 900;
         font-size: 30px;

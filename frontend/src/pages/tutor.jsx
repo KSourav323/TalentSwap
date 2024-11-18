@@ -6,7 +6,7 @@ import { useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import { MdOutlineStar } from "react-icons/md";
 import { MdOutlineDeleteSweep } from "react-icons/md";
-
+import { AiFillCloseCircle } from "react-icons/ai";
 
 function Tutor()
 {
@@ -26,7 +26,7 @@ function Tutor()
 
     function addOffered(e) {
         e.preventDefault();
-        axios.post('http://localhost:5000/api/addOffered', {email: user.email, name: user.name, courseName:newCourseName, courseDesc:newCourseDesc, courseCat: newCourseCat})
+        axios.post('http://localhost:5000/api/addOffered', {email: user.email, name: user.name, tutorId:user.id, courseName:newCourseName, courseDesc:newCourseDesc, courseCat: newCourseCat})
         .then(res=>{
             if(res.status===200) 
             {
@@ -116,7 +116,7 @@ function handleDelete(item) {
                     <div className='popup-content'>
                         <div className='pop-nav'>
                             <h2>Add a New Course</h2>
-                            <button onClick={()=> setShowPopup(!showPopup)}>X</button>
+                            <AiFillCloseCircle className='close-btn' onClick={()=> setShowPopup(!showPopup)} />
                         </div>
                         <input
                             type="text" 
