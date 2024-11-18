@@ -2,14 +2,18 @@ const express = require('express');
 const User = require('../models/User');                     
 const Course = require('../models/Course');             
 const Video = require('../models/Video');             
-const Chat = require('../models/Chats');             
-const Pm = require('../models/Pm');             
+const Chat = require('../models/Chats');         
+const Rating = require('../models/Rating');         
 const router = express.Router();
 const { auth } = require("../middleware/auth");
 const { generateCourseId, getVideoId, generateChatId, generateUserId }= require("../functions/utility");
 const upload = require('../functions/multer');
 const path = require('path');
 const fs = require('fs');
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+
+const genAI = new GoogleGenerativeAI("AIzaSyD-MquYEAZ77bAblfuY5D_f_WyAHEn8EOk");
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
@@ -246,26 +250,7 @@ router.post('/getMessages', async (req, res) => {
   const { courseId,  } = req.body;
   try{
     const chats = await Chat.find({ courseId });
-    const pms = [
-      {
-        "_id": {
-          "$oid": "672d12b87bcd9896ee6c9c17"
-        },
-        "chatId": "CHAT-0ded9e9e-f4af-438d-be7e-af39bfeb05ba",
-        "courseId": "COURSE-82d28879-bad5-4c63-8ac2-8dc4cff9e52f",
-        "senderId": "USER-f966c4b5-8786-4b3b-93cc-dc059b0922fb",
-        "senderName": "sourav",
-        "message": "sddb",
-        "createdAt": {
-          "$date": "2024-11-07T19:19:20.773Z"
-        },
-        "updatedAt": {
-          "$date": "2024-11-07T19:19:20.773Z"
-        },
-        "__v": 0
-      }
-    ]
-    res.status(200).json({chats:chats, pms:pms, message: 'message from server' });
+    res.status(200).json({chats:chats, message: 'message from server' });
   }
   catch (error){
     res.status(500).json({ message: error.message });
@@ -274,7 +259,6 @@ router.post('/getMessages', async (req, res) => {
 
 router.post('/sendMessage', async (req, res) => {
   const { courseId, senderId, message } = req.body;
-  console.log(req.body)
   try{
     const user = await User.findOne({ userId: senderId });
     const chatId = generateChatId();
@@ -288,5 +272,77 @@ router.post('/sendMessage', async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+router.post('/sendAi', async (req, res) => {
+  const { courseId, message } = req.body;
+  try{
+    const course = await Course.findOne({ courseId: courseId });
+    const prompt = `You are an AI assistant for students. In a formal, simple and friendly tone, related to the topic: ${course.courseName}, give a short response to the query: ${message}.`;
+    const result = await model.generateContent(prompt);
+    res.status(200).json({ message: result.response.text() });
+  }
+  catch (error){
+    console.log(error)
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.post('/getRating', async (req, res) => {
+  const { userId, courseId } = req.body;
+  try{
+    const userRating = await Rating.findOne({ userId, courseId });
+    if (userRating) {
+      return res.status(200).json({ rating: userRating.rating });
+    } else {
+      return res.status(200).json({ rating: 0 });
+    }
+  }
+  catch (error){
+    console.log(error)
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.post('/rate', async (req, res) => {
+  const { userId, courseId, rating } = req.body;
+  try{
+    const existingRating = await Rating.findOne({ userId, courseId });
+    if (existingRating) {
+      existingRating.rating = rating;
+      await existingRating.save();
+    } 
+    else {
+      const newRating = new Rating({
+        userId,
+        courseId,
+        rating,
+      });
+      await newRating.save();
+    }
+    
+    const courseRatings = await Rating.find({ courseId });
+    const totalRatings = courseRatings.length;
+    const sumRatings = courseRatings.reduce((sum, current) => sum + current.rating, 0);
+    const averageRating = totalRatings > 0 ? sumRatings / totalRatings : 0;
+    console.log(courseRatings, totalRatings, sumRatings, averageRating)
+
+    const course = await Course.findOne({ courseId });
+    if (course) {
+      course.rating = averageRating;
+      await course.save();
+    }
+
+    res.status(200).json({ message: 'rated' });
+    
+  }
+  catch (error){
+    console.log(error)
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+
+
 
 module.exports = router;

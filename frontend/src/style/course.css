@@ -9,8 +9,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #2B2738;
     padding-inline: 10px;
+    background-color: rgba(137, 57, 169, 0.2);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
 
     .y{
         width: 100px;
@@ -37,6 +39,12 @@
         font-size: 15px;
         margin-left: 5px;
     }
+}
+
+.course-opt{
+    width: 80%;
+    display: flex;
+    gap: 10px;
 }
 
 .course-body{
@@ -74,10 +82,12 @@
     
 
     .video-li {
-        background-color: #2B2738;
+        background-color: rgba(137, 57, 169, 0.2);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
         list-style: none;
         height: 100px;
-        width: 98%;
+        width: 98%; 
         border-radius: 10px;
         display: flex;
         justify-content: space-between;
@@ -133,4 +143,38 @@
     justify-content: flex-start;
     align-items: center;
     flex-direction: column-reverse  ;
+}
+
+.popup-content{
+    background-color: #37004907;
+    height: 30%;
+}
+
+.rate-nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+
+    .rate-close-btn{
+        font-size: 30px;
+    }
+}
+
+.rate-submit{
+    background-color: rgba(137, 57, 169, 0.2);
+    backdrop-filter: blur(10px);
+    width: 20%;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    margin: 10px;
 }

@@ -9,7 +9,7 @@ h2{
     justify-content: flex-start;
     align-items: center;
     h2{
-        color: #2B2738;
+        color: #ffffff;
     }
 }
 
@@ -55,6 +55,7 @@ h2{
             justify-content: flex-start;
             align-items: flex-start;
             position: relative;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
         }
 
         .card-text{
@@ -63,7 +64,7 @@ h2{
             position: absolute;
             bottom: 0;
             border-radius: 10px;
-            background: linear-gradient(to top, rgba(0, 0, 0, 1) 15%, rgba(0, 0, 0, 0) 100%);
+            background: linear-gradient(to top, rgba(0, 0, 0, 1) 25%, rgba(0, 0, 0, 0) 100%);
             display: flex;
             justify-content: flex-end;
             align-items: flex-end;

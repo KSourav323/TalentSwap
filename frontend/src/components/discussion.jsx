@@ -4,6 +4,7 @@ import axios from 'axios';
 import Timestamp from './timestamp';
 import { useSelector } from 'react-redux';
 import { IoIosSend } from "react-icons/io";
+import ClipLoader from 'react-spinners/ClipLoader';
 
 const Discussion = (item) => {
     const [message, setMessage] = useState('');
@@ -11,7 +12,8 @@ const Discussion = (item) => {
     const [chats, setChats] = useState([]);
     const [reload, setReload] = useState(false);
     const [toggle, setToggle] = useState(true);
-    const [pm, setPm] = useState([]);
+    const [loader, setLoader] = useState(false);
+    const [ai, setAi] = useState([{sender:'Bot', message:"Hello there! 👋 I'm your personal assistant powered by Google Gemini. How can I assist you today? "}]);
     const user = useSelector((state) => state.user.user);
 
     useEffect(() => {
@@ -20,8 +22,7 @@ const Discussion = (item) => {
             .then(res=>{
                 if(res.status===200) 
                 {
-                    setChats(res.data.chats);
-                    setPm(res.data.pms);
+                    setChats(res.data.chats.reverse());
                 }
                 else
                 {
@@ -56,13 +57,17 @@ const Discussion = (item) => {
     })
     };
 
-    function handlePm() {
-        axios.post('http://localhost:5000/api/sendPm', {courseId: item.courseId, senderId:item.senderId, message:message})
+    function handleAi() {
+        const updatedAi = [ {sender:'You', message:direct}, ...ai];
+        setAi(updatedAi);
+        setDirect('')
+        axios.post('http://localhost:5000/api/sendAi', {courseId : item.courseId, message:direct})
         .then(res=>{
             if(res.status===200) 
             {
                 setReload(prev => !prev);
-                setPm('');
+                setAi(prevAi => [{sender:'Bot', message: res.data.message}, ...prevAi]); 
+                setLoader(false)
             }
             else
             {
@@ -82,7 +87,7 @@ const Discussion = (item) => {
   return (
     <div className='disc'>
         <button className='toggle-btn' onClick={toggleComponent}>
-          {toggle ? 'Switch to Personal' : 'Switch to Discussion'}
+          {toggle ? 'Ask AI' : 'Switch to Discussion'}
         </button>
 
         {toggle ? (
@@ -101,7 +106,8 @@ const Discussion = (item) => {
                     </ul>
                 </div>
                 <div className='disc-send'>
-                    <input className='sendinp'
+                    <textarea className='sendinp'
+                        rows="1"
                         type="text"
                         id="message"
                         value={message}
@@ -116,11 +122,10 @@ const Discussion = (item) => {
             <div className='chatbox'>
                 <div className='disc-chats'>
                     <ul className='chat-ul'>
-                        {pm.map((item, index) => (
+                        {ai.map((item, index) => (
                             <li className='chat-li' key={index}>
                                 <div className='chat-det'>
-                                    <p className='chat-name'>{item.senderName}</p>
-                                    <Timestamp timestamp={item.createdAt}/>
+                                    <p className='bot'>{item.sender}</p>
                                 </div>
                                 <p className='chat-message'>{item.message}</p>
                             </li>
@@ -128,7 +133,8 @@ const Discussion = (item) => {
                     </ul>
                 </div>
                 <div className='disc-send'>
-                    <input className='sendinp'
+                    <textarea className='sendinp'
+                        rows="1"
                         type="text"
                         id="direct"
                         value={direct}
@@ -136,8 +142,12 @@ const Discussion = (item) => {
                         autoComplete="direct"
                         required
                     />
-                    <button className='disc-btn' onClick={() => handlePm()}><IoIosSend className='sendbtn'/></button>
-                </div>
+                    {loader ? (
+                        <ClipLoader color="#3498db" loading={loader} size={20} />
+                    ) : (
+                        <button className='disc-btn' onClick={() => {handleAi(); setLoader(true)}}><IoIosSend className='sendbtn'/></button>
+                    )}
+                    </div>
             </div>
         )}
         
