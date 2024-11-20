@@ -7,13 +7,10 @@ const Rating = require('../models/Rating');
 const router = express.Router();
 const { auth } = require("../middleware/auth");
 const { generateCourseId, getVideoId, generateChatId, generateUserId }= require("../functions/utility");
+const { botResponse } = require('../functions/bot');
 const upload = require('../functions/multer');
 const path = require('path');
 const fs = require('fs');
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-
-const genAI = new GoogleGenerativeAI("AIzaSyD-MquYEAZ77bAblfuY5D_f_WyAHEn8EOk");
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
@@ -99,10 +96,14 @@ router.post('/getCourseList', async (req, res) => {
     const offered = user.teachingCourses || [];
     const enrolled = user.enrolledCourses || [];
 
+    const topCourses = await Course.find()
+      .sort({ rating: -1 })
+      .limit(10);
+
     const offeredCourses = await Course.find({ courseId: { $in: offered } });
     const enrolledCourses = await Course.find({ courseId: { $in: enrolled } });
 
-    res.status(200).json({offered:offeredCourses, enrolled:enrolledCourses, message: 'message from server' });
+    res.status(200).json({offered:offeredCourses, trending:topCourses, enrolled:enrolledCourses, message: 'message from server' });
   }
   catch (error){
     res.status(500).json({ message: error.message });
@@ -324,8 +325,8 @@ router.post('/sendAi', async (req, res) => {
   try{
     const course = await Course.findOne({ courseId: courseId });
     const prompt = `You are an AI assistant for students. In a formal, simple and friendly tone, related to the topic: ${course.courseName}, give a short response to the query: ${message}.`;
-    const result = await model.generateContent(prompt);
-    res.status(200).json({ message: result.response.text() });
+    const result = await botResponse(prompt);
+    res.status(200).json({ message: result });
   }
   catch (error){
     console.log(error)
@@ -385,8 +386,6 @@ router.post('/rate', async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-
-
 
 
 

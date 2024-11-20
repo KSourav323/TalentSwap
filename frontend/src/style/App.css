@@ -14,21 +14,21 @@ h1{
   font-weight: 500;
 }
 
-ul::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 10px; 
 }
 
-ul::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background-color: #000000; 
   border-radius: 6px;
   border: 3px solid transparent;
 }
 
-ul::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
   background-color: #151515;
 }
 
-ul::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: #bbbbbb;
   border-radius: 6px;
 }

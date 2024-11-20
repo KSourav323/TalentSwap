@@ -53,7 +53,7 @@ const Search = () => {
             <button onClick={(e)=>{e.preventDefault; getSearchResult(filter)}}><CiSearch className='searchbtn'/></button>
           </div>
         </div>
-          <ul className='course-ul'>
+          <ul className='scourse-ul'>
             {results.map((item, index) => (
               <div className='course-li' key={index}  onClick={() => handleTile(item.courseId)} >
                 <img src={`/images/${item.category}.jpg`} className='card-image' loading="lazy" />

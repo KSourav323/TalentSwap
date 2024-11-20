@@ -13,6 +13,8 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import Search from "./pages/search.jsx"
 
+
+
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import React from 'react';
 import './style/App.css'

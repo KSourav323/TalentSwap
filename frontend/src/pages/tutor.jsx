@@ -87,6 +87,7 @@ function handleDelete(item) {
       <div className='clist'>
         <Navbar page={'tutor'}/> 
         <div className='clist-body'>
+            <br />
                 <div className='clist-part'>
                     <div className='clist-nav'>
                         <h2>Offered courses</h2>

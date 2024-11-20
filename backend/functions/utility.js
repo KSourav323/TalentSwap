@@ -21,4 +21,5 @@ function getVideoId(filename) {
   return path.basename(filename, path.extname(filename));
 }
 
+
 module.exports = { generateCourseId, generateVideoId, getVideoId, generateChatId, generateUserId};
