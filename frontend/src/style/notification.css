@@ -14,14 +14,27 @@
     }
 
     .list{
-        background-color: rgb(255, 255, 255);
         height: 100%;
         width: 60%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        justify-content: flex-start;
+        align-items: center;
+        padding-top: 10px;
     }
 
     .box{
         background-color: #998eb9;
         height: 100%;
         width: 40%;
+    }
+    
+    .noti-li{
+        width: 96%;
+        height: 10%;
+        background-color: #5b4e82;
+        border-radius: 10px;
+        padding: 10px;
     }
 }

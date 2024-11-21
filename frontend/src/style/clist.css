@@ -43,15 +43,16 @@ h2{
         padding: 0;
         margin: 0;
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(5, 1fr);
         padding: 10px;
-        grid-gap: 10px;
+        grid-gap: 1px;
 
         .clist-li{
             background-color: #202020;
-            width: 280px;
+            width: 260px;
             height: 250px;
-            margin: 10px;
+            margin: 5px;
+            margin-bottom: 8px; 
             transition: transform 0.3s ease;
             border-radius: 10px;
             display: flex;
@@ -63,12 +64,12 @@ h2{
         }
 
         .card-text{
-            height: 95%;
+            height: 100%;
             width: 100%;
             position: absolute;
             bottom: 0;
             border-radius: 10px;
-            background: linear-gradient(to top, rgba(0, 0, 0, 1) 25%, rgba(0, 0, 0, 0) 100%);
+            background: linear-gradient(to top, rgb(9, 0, 19) 20%,rgb(9, 0, 19, 0.6) 29%, rgba(15, 0, 30, 0) 50%); 
             display: flex;
             justify-content: flex-end;
             align-items: flex-end;
@@ -201,6 +202,12 @@ h2{
     padding-top: 20px;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+    flex-direction: column;
+
+    h2{
+        padding-left: 16px;
+        margin-bottom: 10px;
+    }
 }
 

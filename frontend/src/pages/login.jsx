@@ -29,9 +29,9 @@ function Login()
                 setPassword('');
                 navigate('/learner');
             }
-            else
+            else if(res.status===201)
             {
-                alert('Invalid details')
+                alert('Invalid credentials')
                 navigate('/login')
             }
         })

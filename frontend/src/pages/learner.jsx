@@ -46,6 +46,7 @@ function Learner()
             <div className='clist-part'>
                 <div className='content'>
                     <div className='slider'>
+                        <h2>Trending courses</h2>
                         <Carousel trending={trending}/>
                     </div>
                     <div className='clist-nav'>

@@ -16,13 +16,13 @@ router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
-    return res.status(401).json({ message: 'Invalid credentials' });
+    return res.status(201).json({ message: 'Invalid credentials' });
   }
   if (password == user.password){
     res.status(200).json({ user:user, message: 'message from server' });
   }
   else{
-    res.status(401).json({ message: 'Wrong password' });
+    res.status(201).json({ message: 'Wrong password' });
   }
 });
 
@@ -59,7 +59,7 @@ router.post('/getProfile', async (req, res) => {
 });
 
 router.post('/updateProfile', async (req, res) => {
-  const { userId, fname, lname, email, roll, mobile, language, password } = req.body;
+  const { userId, fname, lname, email, roll, mobile, language, password, rpassword } = req.body;
     try {
       const user = await User.findOne({ userId });
       if (password == user.password){
@@ -72,7 +72,7 @@ router.post('/updateProfile', async (req, res) => {
             roll:roll,
             mobile:mobile,
             language:language,
-            password:password
+            password:rpassword
           },
         );
         res.status(200).json({ message: 'message from server' });
@@ -98,7 +98,12 @@ router.post('/getCourseList', async (req, res) => {
 
     const topCourses = await Course.find()
       .sort({ rating: -1 })
-      .limit(10);
+      .limit(9)
+      .lean(); 
+
+    const tr = topCourses.map((doc, index) => {
+      doc.number = index+1;
+    });    
 
     const offeredCourses = await Course.find({ courseId: { $in: offered } });
     const enrolledCourses = await Course.find({ courseId: { $in: enrolled } });
@@ -146,7 +151,6 @@ router.post('/deleteCourse', async (req, res) => {
 router.post('/getSearchResult', async (req, res) => {
   try {
     const {filter} = req.body
-    console.log(filter)
     const result = await Course.find();
     res.status(200).json({result:result});
   } 
@@ -329,8 +333,7 @@ router.post('/sendAi', async (req, res) => {
     res.status(200).json({ message: result });
   }
   catch (error){
-    console.log(error)
-    res.status(500).json({ message: error.message });
+    res.status(200).json({ message: 'The model is overloaded. Service unavailable.' });
   }
 });
 

@@ -15,11 +15,11 @@ h1{
 }
 
 ::-webkit-scrollbar {
-  width: 10px; 
+  width: 7px; 
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #000000; 
+  background-color: #4f0055; 
   border-radius: 6px;
   border: 3px solid transparent;
 }
@@ -29,6 +29,6 @@ h1{
 }
 
 ::-webkit-scrollbar-track {
-  background: #bbbbbb;
+  background: transparent;
   border-radius: 6px;
 }

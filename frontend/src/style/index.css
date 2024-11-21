@@ -7,9 +7,9 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: radial-gradient(circle at 50% 50%, #420044 5%, #0f011e 90%);
+  background: radial-gradient(circle at 50% 50%, #420044 1%, #0f011e 99%);
   background-size: 200% 200%;
-  animation: moveGradient 10s infinite linear;
+  animation: moveGradient 7s infinite linear;
 }
 
 @keyframes moveGradient {

@@ -23,7 +23,7 @@ const Profile = () => {
     const user = useSelector((state) => state.user.user);
 
     function handleChange() {
-      axios.post('http://localhost:5000/api/updateProfile', {userId: user.id, fname, lname, email, roll, mobile, language, password})
+      axios.post('http://localhost:5000/api/updateProfile', {userId: user.id, fname, lname, email, roll, mobile, language, password, rpassword})
       .then(res=>{
           if(res.status===200) 
           {
@@ -150,7 +150,7 @@ const Profile = () => {
                       type="text" 
                       placeholder= {offCount}
                     />
-                    <label>Password:</label>
+                    <label>Old password:</label>
                     <input 
                       type="password" 
                       placeholder= {password}
@@ -158,7 +158,7 @@ const Profile = () => {
                       value={password}
                       autoComplete='password'
                     />
-                    <label>Repeat password:</label>
+                    <label>New password:</label>
                     <input 
                       type="password" 
                       placeholder= {rpassword}
