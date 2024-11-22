@@ -57,7 +57,8 @@ const Manage = () => {
 
     axios.post('http://localhost:5000/api/addVideo', formData, {
       headers: {
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${user.token}`
       }
     }).then(res=>{
         if(res.status===200) 
@@ -79,10 +80,14 @@ const Manage = () => {
 }
 
 function deleteVideo(item) {
-  axios.post('http://localhost:5000/api/deleteVideo', {videoId:item})
+  axios.post('http://localhost:5000/api/deleteVideo', {videoId:item}, {
+    headers: {
+      Authorization: `Bearer ${user.token}` 
+    }
+  } )
   .then(res=>{
       if(res.status===200) 
-      {
+      {   
           setReload(prev => !prev);
       }
       else
@@ -97,7 +102,11 @@ function deleteVideo(item) {
 
   useEffect(() => {
     async function getVideoList() {
-        axios.post('http://localhost:5000/api/getVideoList', {courseId:courseId})
+        axios.post('http://localhost:5000/api/getVideoList', {courseId:courseId}, {
+          headers: {
+            Authorization: `Bearer ${user.token}` 
+          }
+        })
         .then(res=>{
             if(res.status===200) 
             {
@@ -117,7 +126,11 @@ function deleteVideo(item) {
 
   useEffect(() => {
     async function getCourseDetails() {
-        axios.post('http://localhost:5000/api/getCourseDetails', {courseId:courseId})
+        axios.post('http://localhost:5000/api/getCourseDetails', {courseId:courseId}, {
+          headers: {
+            Authorization: `Bearer ${user.token}`
+          }
+        })
         .then(res=>{
             if(res.status===200) 
             {

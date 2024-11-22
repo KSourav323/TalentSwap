@@ -20,8 +20,10 @@ const Course = () => {
   const [videoDetails, setVideoDetails] = useState([]);
   const [courseDetails, setCourseDetails] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
+  const [slotPopup, setSlotPopup] = useState(false);
   const [rating, setRating] = useState(0);
   const [reload, setReload] = useState(false);
+  const [slots, setSlots] = useState('');
   const user = useSelector((state) => state.user.user);
 
   function playVideo(item) {
@@ -33,9 +35,13 @@ const Course = () => {
     navigate(-1);
   }
 
-
   function handleEnroll() {
-    axios.post('http://localhost:5000/api/enroll', {email:user.email, courseId})
+    axios.post('http://localhost:5000/api/enroll', {email:user.email, courseId},
+      {
+        headers: {
+          Authorization: `Bearer ${user.token}`
+        }
+      })
     .then(res=>{
         if(res.status===200) 
         {
@@ -54,7 +60,12 @@ const Course = () => {
 
   useEffect(() => {
     async function getRating() {
-      axios.post('http://localhost:5000/api/getRating', {userId:user.id, courseId:courseId})
+      axios.post('http://localhost:5000/api/getRating', {userId:user.id, courseId:courseId},
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`
+          }
+        })
       .then(res=>{
           if(res.status===200) 
           {
@@ -78,7 +89,12 @@ const Course = () => {
   };
 
   function rateCourse() {
-    axios.post('http://localhost:5000/api/rate', {userId:user.id, courseId:courseId, rating:rating})
+    axios.post('http://localhost:5000/api/rate', {userId:user.id, courseId:courseId, rating:rating},
+      {
+        headers: {
+          Authorization: `Bearer ${user.token}`
+        }
+      })
     .then(res=>{
         if(res.status===200) 
         {
@@ -95,8 +111,36 @@ const Course = () => {
     })
   }
 
+  function bookSlot() {
+    axios.post('http://localhost:5000/api/bookSlot', {userId:user.id, courseId:courseId, slots:slots},
+      {
+        headers: {
+          Authorization: `Bearer ${user.token}`
+        }
+      })
+    .then(res=>{
+        if(res.status===200) 
+        {
+            setSlotPopup(!slotPopup)
+            setSlots('')
+        }
+        else
+        {
+            alert('Server error')
+        }
+    })
+    .catch(err=>{
+        alert('Error')
+    })
+  }
+
   function handleUnenroll() {
-    axios.post('http://localhost:5000/api/unEnroll', {email:user.email, courseId})
+    axios.post('http://localhost:5000/api/unEnroll', {email:user.email, courseId},
+      {
+        headers: {
+          Authorization: `Bearer ${user.token}`
+        }
+      })
     .then(res=>{
         if(res.status===200) 
         {
@@ -115,7 +159,12 @@ const Course = () => {
 
   useEffect(() => {
     async function checkEnrollment() {
-      axios.post('http://localhost:5000/api/isEnrolled', {email:user.email, courseId:courseId})
+      axios.post('http://localhost:5000/api/isEnrolled', {email:user.email, courseId:courseId},
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`
+          }
+        })
       .then(res=>{
           if(res.status===200) 
           {
@@ -135,7 +184,12 @@ const Course = () => {
 
   useEffect(() => {
     async function getVideoList() {
-        axios.post('http://localhost:5000/api/getVideoList', {courseId:courseId})
+        axios.post('http://localhost:5000/api/getVideoList', {courseId:courseId},
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`
+            }
+          })
         .then(res=>{
             if(res.status===200) 
             {
@@ -155,7 +209,11 @@ const Course = () => {
 
   useEffect(() => {
     async function getCourseDetails() {
-        axios.post('http://localhost:5000/api/getCourseDetails', {courseId:courseId})
+        axios.post('http://localhost:5000/api/getCourseDetails', {courseId:courseId},{
+          headers: {
+            Authorization: `Bearer ${user.token}`
+          }
+        })
         .then(res=>{
             if(res.status===200) 
             {
@@ -185,6 +243,7 @@ const Course = () => {
               <button className='n' onClick={() =>handleEnroll()}>Enroll</button>
             )}
           <button className="add-video" onClick={() => setShowPopup(!showPopup)}>Rate</button>
+          <button className="add-video" onClick={() => setSlotPopup(!slotPopup)}>Appointment</button>
         </div>
         <button className="go-back" onClick={goBack}>Go Back 🡭</button>
       </div>
@@ -236,6 +295,27 @@ const Course = () => {
                       />
                       
                       <button className='rate-submit' onClick={()=> rateCourse()}>Submit</button>
+                  </div>
+              </div>
+            )}
+
+            {slotPopup && (
+              <div className='popup'>
+                  <div className='popup-content'>
+                    <div className="rate-nav">
+                        <h2>Enter your prefered slots</h2>
+                        <AiFillCloseCircle className='rate-close-btn' onClick={()=> setSlotPopup(!slotPopup)} />
+                    </div>
+                      <input className='inp'
+                          type="text"
+                          id="slots"
+                          placeholder='List your prefered date and time'
+                          value={slots}
+                          onChange={(e) => setSlots(e.target.value)}
+                          autoComplete="slots"
+                          required
+                      />
+                      <button className='rate-submit' onClick={()=> bookSlot()}>Submit</button>
                   </div>
               </div>
           )}

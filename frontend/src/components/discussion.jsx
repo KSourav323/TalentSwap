@@ -18,7 +18,11 @@ const Discussion = (item) => {
 
     useEffect(() => {
         async function getMessages() {
-            axios.post('http://localhost:5000/api/getMessages', {courseId: item.courseId, userId: user.id})
+            axios.post('http://localhost:5000/api/getMessages', {courseId: item.courseId, userId: user.id} , {
+                headers: {
+                  Authorization: `Bearer ${user.token}`
+                }
+            })
             .then(res=>{
                 if(res.status===200) 
                 {
@@ -39,7 +43,11 @@ const Discussion = (item) => {
   
 
     function handleSend() {
-        axios.post('http://localhost:5000/api/sendMessage', {courseId: item.courseId, senderId:item.senderId, message:message})
+        axios.post('http://localhost:5000/api/sendMessage', {courseId: item.courseId, senderId:item.senderId, message:message}, {
+            headers: {
+              Authorization: `Bearer ${user.token}`
+            }
+        })
         .then(res=>{
             if(res.status===200) 
             {
@@ -61,7 +69,11 @@ const Discussion = (item) => {
         const updatedAi = [ {sender:'You', message:direct}, ...ai];
         setAi(updatedAi);
         setDirect('')
-        axios.post('http://localhost:5000/api/sendAi', {courseId : item.courseId, message:direct})
+        axios.post('http://localhost:5000/api/sendAi', {courseId : item.courseId, message:direct}, {
+            headers: {
+              Authorization: `Bearer ${user.token}`
+            }
+        })
         .then(res=>{
             if(res.status===200) 
             {

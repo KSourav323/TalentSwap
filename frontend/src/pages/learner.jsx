@@ -20,7 +20,11 @@ function Learner()
 
     useEffect(() => {
         async function getOfferedList() {
-            axios.post('http://localhost:5000/api/getCourseList', {email:user.email})
+            axios.post('http://localhost:5000/api/getCourseList', {email:user.email}, {
+                headers: {
+                  Authorization: `Bearer ${user.token}`
+                }
+              })
             .then(res=>{
                 if(res.status===200) 
                 {

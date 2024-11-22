@@ -1,5 +1,4 @@
 import React from 'react'
-import { BiBorderRadius } from 'react-icons/bi';
 
 const Timestamp = (item) => {
 

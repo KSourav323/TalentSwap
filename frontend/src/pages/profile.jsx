@@ -23,7 +23,11 @@ const Profile = () => {
     const user = useSelector((state) => state.user.user);
 
     function handleChange() {
-      axios.post('http://localhost:5000/api/updateProfile', {userId: user.id, fname, lname, email, roll, mobile, language, password, rpassword})
+      axios.post('http://localhost:5000/api/updateProfile', {userId: user.id, fname, lname, email, roll, mobile, language, password, rpassword},{
+        headers: {
+          Authorization: `Bearer ${user.token}`
+        }
+      })
       .then(res=>{
           if(res.status===200) 
           {
@@ -46,7 +50,11 @@ const Profile = () => {
 
   useEffect(() => {
     async function getOfferedList() {
-        axios.post('http://localhost:5000/api/getProfile', {userId:user.id})
+        axios.post('http://localhost:5000/api/getProfile', {userId:user.id},{
+          headers: {
+            Authorization: `Bearer ${user.token}`
+          }
+        })
         .then(res=>{
             if(res.status===200) 
             {

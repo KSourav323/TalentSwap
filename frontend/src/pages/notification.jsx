@@ -1,11 +1,37 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import Navbar from '../components/navbar.jsx';
 import '../style/notification.css'
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 const Notification = () => {
   const user = useSelector((state) => state.user.user);
-  const noti = ['a','b','c','d'];
+  const [noti, setNoti] = useState([]);
+
+  useEffect(() => {
+    async function getNotification() {
+        axios.post('http://localhost:5000/api/getNotification', {userId:user.id},
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`
+            }
+          })
+        .then(res=>{
+            if(res.status===200) 
+            {
+                setNoti(res.data.notifications)
+            }
+            else
+            {
+                setNoti([])
+            }
+        })
+        .catch(err=>{
+            alert('Error')
+    })
+    };
+    getNotification();
+  }, []);
 
     return (
       <div className='noti'>
@@ -15,7 +41,8 @@ const Notification = () => {
             {noti.map((item, index) => (
                 <div className='noti-li' key={index}>
                   <div className="noti-text">
-                      <p>{item}</p>
+                      <p>{item.content}</p>
+                      {/* <button>Approve</button>  */}
                   </div>
                 </div> 
             ))}

@@ -4,13 +4,15 @@ const Course = require('../models/Course');
 const Video = require('../models/Video');             
 const Chat = require('../models/Chats');         
 const Rating = require('../models/Rating');         
+const Notification = require('../models/Notification');         
 const router = express.Router();
 const { auth } = require("../middleware/auth");
-const { generateCourseId, getVideoId, generateChatId, generateUserId }= require("../functions/utility");
+const { generateCourseId, getVideoId, generateChatId, generateUserId, generateToken, sendMail }= require("../functions/utility");
 const { botResponse } = require('../functions/bot');
 const upload = require('../functions/multer');
 const path = require('path');
 const fs = require('fs');
+
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
@@ -19,7 +21,8 @@ router.post('/login', async (req, res) => {
     return res.status(201).json({ message: 'Invalid credentials' });
   }
   if (password == user.password){
-    res.status(200).json({ user:user, message: 'message from server' });
+    const token = generateToken(user.userId);
+    res.status(200).json({ user:user, token:token, message: 'message from server' });
   }
   else{
     res.status(201).json({ message: 'Wrong password' });
@@ -45,7 +48,7 @@ router.post('/signup', async (req, res) => {
  
 });
 
-router.post('/getProfile', async (req, res) => {
+router.post('/getProfile', auth, async (req, res) => {
   const { userId } = req.body;
     try {
       const profile = await User.findOne({ userId:userId });
@@ -58,7 +61,7 @@ router.post('/getProfile', async (req, res) => {
  
 });
 
-router.post('/updateProfile', async (req, res) => {
+router.post('/updateProfile', auth, async (req, res) => {
   const { userId, fname, lname, email, roll, mobile, language, password, rpassword } = req.body;
     try {
       const user = await User.findOne({ userId });
@@ -89,7 +92,7 @@ router.post('/updateProfile', async (req, res) => {
  
 });
 
-router.post('/getCourseList', async (req, res) => {
+router.post('/getCourseList', auth, async (req, res) => {
   const { email } = req.body;
   try{
     const user = await User.findOne({ email });
@@ -115,7 +118,7 @@ router.post('/getCourseList', async (req, res) => {
   }
 });
 
-router.post('/getCourseDetails', async (req, res) => {
+router.post('/getCourseDetails', auth, async (req, res) => {
   const { courseId } = req.body;
   try{
     const course = await Course.findOne({ courseId:courseId });
@@ -126,7 +129,7 @@ router.post('/getCourseDetails', async (req, res) => {
   }
 });
 
-router.post('/deleteCourse', async (req, res) => {
+router.post('/deleteCourse', auth, async (req, res) => {
   const { courseId } = req.body;
   try{
     const courseResult = await Course.deleteOne({ courseId });
@@ -148,7 +151,7 @@ router.post('/deleteCourse', async (req, res) => {
   }
 });
 
-router.post('/getSearchResult', async (req, res) => {
+router.post('/getSearchResult', auth, async (req, res) => {
   try {
     const {filter} = req.body
     const result = await Course.find();
@@ -159,7 +162,7 @@ router.post('/getSearchResult', async (req, res) => {
   }
 });
 
-router.post('/addOffered', async (req, res) => {
+router.post('/addOffered', auth, async (req, res) => {
   const { email, name, tutorId, courseName, courseDesc, courseCat } = req.body;
   const courseId=generateCourseId();
 
@@ -180,7 +183,7 @@ router.post('/addOffered', async (req, res) => {
   }
 });
 
-router.post('/enroll', async (req, res) => {
+router.post('/enroll', auth, async (req, res) => {
   try{
     const { email,courseId } = req.body;
     const user = await User.findOne({ email: email });
@@ -196,7 +199,7 @@ router.post('/enroll', async (req, res) => {
   
 });
 
-router.post('/unEnroll', async (req, res) => {
+router.post('/unEnroll', auth, async (req, res) => {
   try{
     const { email,courseId } = req.body;
     const user = await User.findOne({ email: email });
@@ -211,7 +214,7 @@ router.post('/unEnroll', async (req, res) => {
   
 });
 
-router.post('/isEnrolled', async (req, res) => {
+router.post('/isEnrolled', auth, async (req, res) => {
   try{
     const { email, courseId } = req.body;
     const user = await User.findOne({ email });
@@ -229,7 +232,7 @@ router.post('/isEnrolled', async (req, res) => {
   }
 });
 
-router.post('/getVideoList', async (req, res) => {
+router.post('/getVideoList', auth, async (req, res) => {
   const { courseId } = req.body;
   try{
     const videos = await Video.find({ courseId });
@@ -240,7 +243,7 @@ router.post('/getVideoList', async (req, res) => {
   }
 });
 
-router.post('/addVideo', upload.single('video'), async (req, res) => {
+router.post('/addVideo', auth, upload.single('video'), async (req, res) => {
   const { courseId, videoName, videoSequence } = req.body;
   try{
     if (!req.file) {
@@ -260,7 +263,7 @@ router.post('/addVideo', upload.single('video'), async (req, res) => {
   }
 });
 
-router.post('/deleteVideo', async (req, res) => {
+router.post('/deleteVideo', auth, async (req, res) => {
   const { videoId } = req.body;
   try{
     const result = await Video.deleteOne({ videoId: videoId });
@@ -276,7 +279,7 @@ router.post('/deleteVideo', async (req, res) => {
   }
 });
 
-router.post('/playVideo', async (req, res) => {
+router.post('/playVideo', auth, async (req, res) => {
   const { filename } = req.body;
   try{
     const videoPath = path.join(__dirname, '..', 'videos', `${filename}.mp4`);
@@ -297,7 +300,7 @@ router.post('/playVideo', async (req, res) => {
   }
 });
 
-router.post('/getMessages', async (req, res) => {
+router.post('/getMessages', auth, async (req, res) => {
   const { courseId,  } = req.body;
   try{
     const chats = await Chat.find({ courseId });
@@ -308,7 +311,7 @@ router.post('/getMessages', async (req, res) => {
   }
 });
 
-router.post('/sendMessage', async (req, res) => {
+router.post('/sendMessage', auth, async (req, res) => {
   const { courseId, senderId, message } = req.body;
   try{
     const user = await User.findOne({ userId: senderId });
@@ -324,7 +327,7 @@ router.post('/sendMessage', async (req, res) => {
   }
 });
 
-router.post('/sendAi', async (req, res) => {
+router.post('/sendAi', auth, async (req, res) => {
   const { courseId, message } = req.body;
   try{
     const course = await Course.findOne({ courseId: courseId });
@@ -337,7 +340,7 @@ router.post('/sendAi', async (req, res) => {
   }
 });
 
-router.post('/getRating', async (req, res) => {
+router.post('/getRating', auth, async (req, res) => {
   const { userId, courseId } = req.body;
   try{
     const userRating = await Rating.findOne({ userId, courseId });
@@ -353,7 +356,7 @@ router.post('/getRating', async (req, res) => {
   }
 });
 
-router.post('/rate', async (req, res) => {
+router.post('/rate', auth, async (req, res) => {
   const { userId, courseId, rating } = req.body;
   try{
     const existingRating = await Rating.findOne({ userId, courseId });
@@ -390,6 +393,55 @@ router.post('/rate', async (req, res) => {
   }
 });
 
+router.post('/bookSlot', auth, async (req, res) => {
+  const { userId, courseId, slots } = req.body;
+  try{
+    const user = await User.findOne({ userId });
+    const senderEmail = user.email;
+    const course = await Course.findOne({ courseId });
+    const tutorId = course.tutorId
+    const tutor = await User.findOne({ userId:tutorId });
+    const receiverEmail = tutor.email
+
+    const mailOptions = {
+      from: senderEmail,  
+      to: receiverEmail,                       
+      subject: 'Request for Appointment',              
+      text: 'Preferd slots: '+ slots  
+    };
+
+    const content= user.fname+', roll number:'+ user.roll+ ', requested for an appointment for course:'+course.courseName+'. Prefered slots are:'+slots
+
+    sendMail(mailOptions)
+
+    const newNotification = new Notification({ senderId:userId, receiverId:tutorId, content: content});
+    const savedNotification = await newNotification.save();
+
+    res.status(200).json({ message: 'sent' });
+  }
+  catch (error){
+    console.log(error)
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.post('/getNotification', auth, async (req, res) => {
+  const { userId } = req.body;
+  try{
+    const notifications = await Notification.find({ receiverId: userId });
+
+    if (notifications.length > 0) {
+      return res.status(200).json({ notifications:notifications });
+    } 
+    else {
+      return res.status(201).json({ notifications:[] });
+    }
+  }
+  catch (error){
+    console.log(error)
+    res.status(500).json({ message: error.message });
+  }
+});
 
 
 module.exports = router;

@@ -6,7 +6,7 @@ import { GrCaretPrevious } from "react-icons/gr";
 import { GrCaretNext } from "react-icons/gr";
 
 const Carousel = ({ trending = [] }) => {
-  if (!trending.length) return null;
+  if (!trending || !trending.length) return null;
 
   const tr = [trending[trending.length - 1], ...trending, trending[0]]
   const [currentIndex, setCurrentIndex] = useState(1);
@@ -18,13 +18,16 @@ const Carousel = ({ trending = [] }) => {
     navigate(`/course/${item}`);
 }
 
-  useEffect(() => {
-    if (isHovered) return;
-    const interval = setInterval(() => {
-      handleNext();
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [isHovered]);
+useEffect(() => {
+  if (isHovered) return;
+  handleNext(); 
+
+  const interval = setInterval(() => {
+    handleNext();
+  }, 3000);
+  
+  return () => clearInterval(interval);
+}, [isHovered]);
 
   const handleNext = () => {
     if (isTransitioning) return;

@@ -1,5 +1,27 @@
 const { v4: uuidv4 } = require('uuid');
+const jwt = require('jsonwebtoken');
 const path = require('path');
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'souravk.ofc@gmail.com', 
+    pass: 'qesz ogtg wubt ivrm',  
+  },
+});
+
+function sendMail(mailOptions) {
+  transporter.sendMail(mailOptions);
+  return 0;
+}
+
+const generateToken = (userId) => {
+  const token = jwt.sign({ id: userId }, 'talentswapkey', {
+    expiresIn: '1h',
+  });
+  return token;
+};
 
 function generateUserId() {
   return `USER-${uuidv4()}`;
@@ -22,4 +44,4 @@ function getVideoId(filename) {
 }
 
 
-module.exports = { generateCourseId, generateVideoId, getVideoId, generateChatId, generateUserId};
+module.exports = { generateCourseId, generateVideoId, getVideoId, generateChatId, generateUserId, generateToken, sendMail};

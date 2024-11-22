@@ -26,7 +26,13 @@ function Tutor()
 
     function addOffered(e) {
         e.preventDefault();
-        axios.post('http://localhost:5000/api/addOffered', {email: user.email, name: user.name, tutorId:user.id, courseName:newCourseName, courseDesc:newCourseDesc, courseCat: newCourseCat})
+        axios.post('http://localhost:5000/api/addOffered', {email: user.email, name: user.name, tutorId:user.id, courseName:newCourseName, courseDesc:newCourseDesc, courseCat: newCourseCat}, 
+            {
+                headers: {
+                  Authorization: `Bearer ${user.token}`
+                }
+            }
+        )
         .then(res=>{
             if(res.status===200) 
             {
@@ -47,7 +53,11 @@ function Tutor()
     }
 
 function handleDelete(item) {
-    axios.post('http://localhost:5000/api/deleteCourse', {courseId:item})
+    axios.post('http://localhost:5000/api/deleteCourse', {courseId:item}, {
+        headers: {
+          Authorization: `Bearer ${user.token}`
+        }
+    })
     .then(res=>{
         if(res.status===200) 
         {
@@ -65,7 +75,13 @@ function handleDelete(item) {
 
     useEffect(() => {
         async function getOfferedList() {
-            axios.post('http://localhost:5000/api/getCourseList', {email:user.email})
+            axios.post('http://localhost:5000/api/getCourseList', {email:user.email}, 
+                {
+                    headers: {
+                      Authorization: `Bearer ${user.token}`
+                    }
+                }
+            )
             .then(res=>{
                 if(res.status===200) 
                 {

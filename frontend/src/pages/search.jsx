@@ -5,18 +5,25 @@ import Navbar from '../components/navbar.jsx';
 import axios from 'axios';
 import { MdOutlineStar } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
+import { useSelector } from 'react-redux';
 
 const Search = () => {
   const navigate = useNavigate();
   const [results, setResults] = useState([]);
   const [filter, setFilter] = useState('');
+  const user = useSelector((state) => state.user.user);
+  
   
   function handleTile(item) {
     navigate(`/course/${item}`);
   }
 
   const getSearchResult = async (filter) =>  {
-    axios.post('http://localhost:5000/api/getSearchResult', {filter:filter})
+    axios.post('http://localhost:5000/api/getSearchResult', {filter:filter},{
+      headers: {
+        Authorization: `Bearer ${user.token}`
+      }
+    })
     .then(res=>{
         if(res.status===200) 
         {
