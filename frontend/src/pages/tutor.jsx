@@ -145,7 +145,7 @@ function handleDelete(item) {
                         />
                         <input
                             type="text" 
-                            placeholder="Course Description" 
+                            placeholder="Course Description (50 words)" 
                             value={newCourseDesc}
                             onChange={(e) => setNewCourseDesc(e.target.value)}
                             autoComplete="newCourseDesc"

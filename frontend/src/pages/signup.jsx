@@ -23,28 +23,33 @@ function Signup()
     function handleSubmit(e) {
         e.preventDefault();
 
-        axios.post('http://localhost:5000/api/signup', {name, email, password, roll})
-        .then(res=>{
-            if(res.status==200) 
-            {
-                dispatch(login({ name:res.data.user.name, id:res.data.user.userId, email:email, password:password }));
-                navigate('/learner');
-                setUsername('');
-                setEmail('');
-                setPassword('');
-                setRoll('');
-            }
-            else
-            {
-                alert('Invalid details')
+        if (!email.endsWith('@nitc.ac.in')) {
+            alert('You can only register with nitc email.');
+        }
+        else{
+            axios.post('http://localhost:5000/api/signup', {name, email, password, roll})
+            .then(res=>{
+                if(res.status==200) 
+                {
+                    dispatch(login({ name:res.data.user.name, id:res.data.user.userId, email:email, password:password }));
+                    navigate('/learner');
+                    setUsername('');
+                    setEmail('');
+                    setPassword('');
+                    setRoll('');
+                }
+                else
+                {
+                    alert('Invalid details')
+                    navigate('/signup')
+                }
+            }) 
+            .catch(err=>{
+                alert('Error')
+                console.log(err)
                 navigate('/signup')
-            }
-        }) 
-        .catch(err=>{
-            alert('Error')
-            console.log(err)
-            navigate('/signup')
-    })
+            })
+        }
     };
 
     return(
@@ -101,20 +106,20 @@ function Signup()
                         <div>
                             <input className='inp'
                                 type="password"
-                                id="password"
                                 value={password}
                                 placeholder='Enter password'
                                 onChange={(e) => setPassword(e.target.value)}
+                                autoComplete="newpassword"
                                 required
                             />
                         </div>
                         <div>
                             <input className='inp'
                                 type="password"
-                                id="password"
                                 value={rpassword}
                                 placeholder='Repeat password'
                                 onChange={(e) => setRPassword(e.target.value)}
+                                autoComplete="newpassword"
                                 required
                             />
                         </div>

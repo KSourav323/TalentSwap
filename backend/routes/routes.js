@@ -12,6 +12,7 @@ const { botResponse } = require('../functions/bot');
 const upload = require('../functions/multer');
 const path = require('path');
 const fs = require('fs');
+const bcrypt = require('bcrypt');
 
 
 router.post('/login', async (req, res) => {
@@ -20,7 +21,8 @@ router.post('/login', async (req, res) => {
   if (!user) {
     return res.status(201).json({ message: 'Invalid credentials' });
   }
-  if (password == user.password){
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (isMatch){
     const token = generateToken(user.userId);
     res.status(200).json({ user:user, token:token, message: 'message from server' });
   }
@@ -37,7 +39,11 @@ router.post('/signup', async (req, res) => {
       const lname = ''
       const mobile = ''
       const language = ''
-      const newUser = new User({ userId, fname, lname, email, roll, mobile, language, password });
+
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+      const newUser = new User({ userId, fname, lname, email, roll, mobile, language, password:hashedPassword });
       const savedUser = await newUser.save();
       res.status(200).json({ user:savedUser, message: 'message from server' });
     } 
@@ -65,19 +71,37 @@ router.post('/updateProfile', auth, async (req, res) => {
   const { userId, fname, lname, email, roll, mobile, language, password, rpassword } = req.body;
     try {
       const user = await User.findOne({ userId });
-      if (password == user.password){
-        const updatedUser = await User.findOneAndUpdate(
-          { userId: userId },
-          {
-            fname:fname,
-            lname: lname,
-            email: email,
-            roll:roll,
-            mobile:mobile,
-            language:language,
-            password:rpassword
-          },
-        );
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (isMatch){
+        if (rpassword.trim().length === 0){
+          const updatedUser = await User.findOneAndUpdate(
+            { userId: userId },
+            {
+              fname:fname,
+              lname: lname,
+              email: email,
+              roll:roll,
+              mobile:mobile,
+              language:language
+            },
+          );
+        }
+        else{
+          const saltRounds = 10;
+          const hashedPassword = await bcrypt.hash(rpassword, saltRounds);
+          const updatedUser = await User.findOneAndUpdate(
+            { userId: userId },
+            {
+              fname:fname,
+              lname: lname,
+              email: email,
+              roll:roll,
+              mobile:mobile,
+              language:language,
+              password:hashedPassword
+            },
+          );
+        }
         res.status(200).json({ message: 'message from server' });
       }
       else{
@@ -96,17 +120,26 @@ router.post('/getCourseList', auth, async (req, res) => {
   const { email } = req.body;
   try{
     const user = await User.findOne({ email });
-    const offered = user.teachingCourses || [];
-    const enrolled = user.enrolledCourses || [];
+    let offered = [];
+    let enrolled = [];
 
+    if (user.teachingCourses && user.teachingCourses.length > 0) {
+      offered = user.teachingCourses;
+    }
+
+    if (user.enrolledCourses && user.enrolledCourses.length > 0) {
+      enrolled = user.enrolledCourses;
+    }
     const topCourses = await Course.find()
       .sort({ rating: -1 })
       .limit(9)
       .lean(); 
-
-    const tr = topCourses.map((doc, index) => {
-      doc.number = index+1;
-    });    
+    
+    if (topCourses){
+      const tr = topCourses.map((doc, index) => {
+        doc.number = index+1;
+      });    
+    }
 
     const offeredCourses = await Course.find({ courseId: { $in: offered } });
     const enrolledCourses = await Course.find({ courseId: { $in: enrolled } });
@@ -114,6 +147,7 @@ router.post('/getCourseList', auth, async (req, res) => {
     res.status(200).json({offered:offeredCourses, trending:topCourses, enrolled:enrolledCourses, message: 'message from server' });
   }
   catch (error){
+    console.log(error)
     res.status(500).json({ message: error.message });
   }
 });
@@ -153,8 +187,20 @@ router.post('/deleteCourse', auth, async (req, res) => {
 
 router.post('/getSearchResult', auth, async (req, res) => {
   try {
-    const {filter} = req.body
-    const result = await Course.find();
+    const {filter, category} = req.body
+    let query = {};
+
+    if (category && category !== 'All') {
+      query.category = category; 
+    }
+
+    if (filter && filter.trim()) {
+      query.$or = [
+        { courseName: { $regex: filter, $options: 'i' } }, 
+        { courseDesc: { $regex: filter, $options: 'i' } } 
+      ];
+    }
+   const result = await Course.find(query);
     res.status(200).json({result:result});
   } 
   catch (error) {

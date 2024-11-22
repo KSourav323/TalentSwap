@@ -39,6 +39,13 @@
             outline: none;
         }
 
+        .drop{
+            border-radius: 10px;
+            background-color: #1f0127ed;
+            border: none;
+            width: 130px; 
+        }
+
         button{
             height: 40px;
             width: 40px;

@@ -11,6 +11,7 @@ const Search = () => {
   const navigate = useNavigate();
   const [results, setResults] = useState([]);
   const [filter, setFilter] = useState('');
+  const [cat, setCat] = useState('All');
   const user = useSelector((state) => state.user.user);
   
   
@@ -19,7 +20,7 @@ const Search = () => {
   }
 
   const getSearchResult = async (filter) =>  {
-    axios.post('http://localhost:5000/api/getSearchResult', {filter:filter},{
+    axios.post('http://localhost:5000/api/getSearchResult', {filter:filter, category:cat},{
       headers: {
         Authorization: `Bearer ${user.token}`
       }
@@ -28,7 +29,6 @@ const Search = () => {
         if(res.status===200) 
         {
             setResults(res.data.result)
-            setFilter('')
         }
         else
         {
@@ -50,6 +50,28 @@ const Search = () => {
       <div className='search-body'>
         <div className='search-div'>
           <div className="search-pill">
+            <select className='drop' value={cat} onChange={(e) => setCat(e.target.value)}>
+              <option value="All">All Category</option>
+              <option value="Engineering">Engineering</option>
+              <option value="Programming">Programming</option>
+              <option value="Mathematics">Mathematics</option>
+              <option value="Science">Science</option>
+              <option value="Sports">Sports</option>
+              <option value="Music">Music</option>
+              <option value="Art">Art</option>
+              <option value="Business">Business</option>
+              <option value="Cooking">Cooking</option>
+              <option value="Crafts">Crafts</option>
+              <option value="Fashion">Fashion</option>
+              <option value="Fitness">Fitness</option>
+              <option value="Gaming">Gaming</option>
+              <option value="Language">Language</option>
+              <option value="Literature">Literature</option>
+              <option value="Technology">Technology</option>
+              <option value="Soft skills">Soft skills</option>
+              <option value="Photography">Photography</option>
+              <option value="Hobbies">Hobbies</option>
+          </select>
             <input 
               type="text" 
               placeholder='Search for a course'
