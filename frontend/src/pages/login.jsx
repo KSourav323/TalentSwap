@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { login } from '../redux/actions.js'
 import axios from 'axios';
 import { FcGoogle } from "react-icons/fc";
+import toast, { Toaster } from 'react-hot-toast';
 
 function Login()
 {
@@ -31,19 +32,20 @@ function Login()
             }
             else if(res.status===201)
             {
-                alert('Invalid credentials')
+                toast.error('Invalid credentials')
                 navigate('/login')
             }
         })
         .catch(err=>{
             console.log(err)
-            alert('Error')
+            toast.error('Something went wrong!')
             navigate('/login')
     })
     };
 
     return(
       <div className='log'>
+        <div><Toaster/></div>
         <div className='panel'>
             <div className='left'>
                 <div className='log-visual'>

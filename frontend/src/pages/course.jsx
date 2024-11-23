@@ -10,6 +10,7 @@ import { IoCheckmark } from "react-icons/io5";
 import { AiFillCloseCircle } from "react-icons/ai";
 import StarRatings from 'react-star-ratings';
 import Timestamp from '../components/timestamp'; 
+import toast, { Toaster } from 'react-hot-toast';
 
 const Course = () => {
   const navigate = useNavigate();
@@ -45,16 +46,16 @@ const Course = () => {
     .then(res=>{
         if(res.status===200) 
         {
-            console.log('triggered enroll')
+            toast.success('Successfully enrolled!')
             setIsEnrolled(!isEnrolled)
         }
         else
         {
-            alert('Server error')
+            toast.error("Server error")
         }
     })
     .catch(err=>{
-        alert('Error')
+        toast.error("Something went wrong!")
     })
   }
 
@@ -73,11 +74,11 @@ const Course = () => {
           }
           else
           {
-              alert('Server error')
+              toast.error("Server error")
           }
       })
       .catch(err=>{
-          alert('Error')
+          toast.error("Something went wrong!")
     })
     };
     getRating();
@@ -100,14 +101,15 @@ const Course = () => {
         {
             setShowPopup(!showPopup)
             setReload(prev => !prev);
+            toast.success('Successfully rated!')
         }
         else
         {
-            alert('Server error')
+            toast.error('Server error')
         }
     })
     .catch(err=>{
-        alert('Error')
+        toast.error('Somwthing went wrong!')
     })
   }
 
@@ -123,14 +125,15 @@ const Course = () => {
         {
             setSlotPopup(!slotPopup)
             setSlots('')
+            toast.success('Request sent!')
         }
         else
         {
-            alert('Server error')
+            toast.error('Server error')
         }
     })
     .catch(err=>{
-        alert('Error')
+        toast.error('Something went wrong!')
     })
   }
 
@@ -144,16 +147,16 @@ const Course = () => {
     .then(res=>{
         if(res.status===200) 
         {
-            console.log('triggered enroll')
+            toast.success('Successfully unenrolled!')
             setIsEnrolled(!isEnrolled)
         }
         else
         {
-            alert('Server error')
+            toast.error('Server error')
         }
     })
     .catch(err=>{
-        alert('Error')
+        toast.error('Something went wrong!')
     })
   }
 
@@ -172,11 +175,11 @@ const Course = () => {
           }
           else
           {
-              alert('Server error')
+              toast.error('Server error')
           }
       })
       .catch(err=>{
-          alert('Error')
+          toast.error('Something went wrong!')
   })
   };
   checkEnrollment();
@@ -197,11 +200,11 @@ const Course = () => {
             }
             else
             {
-                alert('Server error')
+                toast.error('Server error')
             }
         })
         .catch(err=>{
-            alert('Error')
+            toast.error('Something went wrong!')
     })
     };
     getVideoList();
@@ -221,11 +224,11 @@ const Course = () => {
             }
             else
             {
-                alert('Server error')
+                toast.error('Server error')
             }
         })
         .catch(err=>{
-            alert('Error')
+            toast.error('Something went wrong!')
     })
     };
     getCourseDetails();
@@ -234,6 +237,7 @@ const Course = () => {
 
   return (
     <div className='course'>
+      <div><Toaster/></div>
       <div className='course-head'>
         <div className='course-opt'>
           {courseDetails.courseName} videos

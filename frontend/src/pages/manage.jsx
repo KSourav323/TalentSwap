@@ -9,6 +9,7 @@ import Play from '../components/play.jsx';
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { AiFillCloseCircle } from "react-icons/ai";
 import Timestamp from '../components/timestamp'; 
+import toast, { Toaster } from 'react-hot-toast';
 
 const Manage = () => {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ const Manage = () => {
   const [videoName, setVideoName] = useState('');
   const [videoSequence, setVideoSequence] = useState(1);
   const user = useSelector((state) => state.user.user);
+  
   
 
   const handleVideoChange = (e) => {
@@ -68,14 +70,15 @@ const Manage = () => {
             setVideoName('');
             setVideoSequence('');
             setShowPopup(!showPopup);
+            toast.success('Video added successfully!')
         }
         else
         {
-            alert('Server error')
+            toast.error('Server error')
         }
     })
     .catch(err=>{
-        alert('Error')
+        toast.error('Something went wrong!')
     })
 }
 
@@ -89,14 +92,15 @@ function deleteVideo(item) {
       if(res.status===200) 
       {   
           setReload(prev => !prev);
+          toast.success('Video deleted!')
       }
       else
       {
-          alert('Server error')
+          toast.error('Server error')
       }
   })
   .catch(err=>{
-      alert('Error')
+      toast.error('Something went wrong!')
   })
 }
 
@@ -114,11 +118,11 @@ function deleteVideo(item) {
             }
             else
             {
-                alert('Server error')
+                toast.error('Server error')
             }
         })
         .catch(err=>{
-            alert('Error')
+            toast.error('Something went wrong!')
     })
     };
     getVideoList();
@@ -138,11 +142,11 @@ function deleteVideo(item) {
             }
             else
             {
-                alert('Server error')
+                toast.error('Server error')
             }
         })
         .catch(err=>{
-            alert('Error')
+            toast.error('Something went wrong!')
     })
     };
     getCourseDetails();
@@ -151,6 +155,7 @@ function deleteVideo(item) {
 
   return (
     <div className='manage'>
+      <div><Toaster/></div>
       <div className='manage-head'>
         <p className='t'>{courseDetails.courseName}</p>
         <button className="add-video" onClick={() => setShowPopup(!showPopup)}>Add video</button>

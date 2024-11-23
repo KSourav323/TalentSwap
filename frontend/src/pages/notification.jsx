@@ -3,6 +3,7 @@ import Navbar from '../components/navbar.jsx';
 import '../style/notification.css'
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Notification = () => {
   const user = useSelector((state) => state.user.user);
@@ -27,7 +28,7 @@ const Notification = () => {
             }
         })
         .catch(err=>{
-            alert('Error')
+            toast.error('Something went wrong!')
     })
     };
     getNotification();
@@ -35,6 +36,7 @@ const Notification = () => {
 
     return (
       <div className='noti'>
+        <div><Toaster/></div>
         <Navbar page={'notification'}/> 
         <div className='noti-body'>
           <div className='list'>

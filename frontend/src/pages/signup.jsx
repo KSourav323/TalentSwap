@@ -4,6 +4,7 @@ import { useNavigate} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/actions.js'
 import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
 
 function Signup()
 {
@@ -24,7 +25,7 @@ function Signup()
         e.preventDefault();
 
         if (!email.endsWith('@nitc.ac.in')) {
-            alert('You can only register with nitc email.');
+            toast.error('You can only register with nitc email.');
         }
         else{
             axios.post('http://localhost:5000/api/signup', {name, email, password, roll})
@@ -37,16 +38,16 @@ function Signup()
                     setEmail('');
                     setPassword('');
                     setRoll('');
+                    toast.success('User registered!')
                 }
                 else
                 {
-                    alert('Invalid details')
+                    toast.error('Invalid details')
                     navigate('/signup')
                 }
             }) 
             .catch(err=>{
-                alert('Error')
-                console.log(err)
+                toast.error('Something went wrong!')
                 navigate('/signup')
             })
         }
@@ -54,6 +55,7 @@ function Signup()
 
     return(
       <div  className='log'>
+        <div><Toaster/></div>
         <div className='panel'>
             <div className='left'>
                 <div className='log-visual'>

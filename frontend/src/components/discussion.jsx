@@ -5,6 +5,7 @@ import Timestamp from './timestamp';
 import { useSelector } from 'react-redux';
 import { IoIosSend } from "react-icons/io";
 import ClipLoader from 'react-spinners/ClipLoader';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Discussion = (item) => {
     const [message, setMessage] = useState('');
@@ -30,12 +31,11 @@ const Discussion = (item) => {
                 }
                 else
                 {
-                    alert('Server error')
+                    toast.error('Server error')
                 }
             })
             .catch(err=>{
-                console.log(err)
-                alert('Error')
+                toast.error('Something went wrong!')
         })
         };
         getMessages();
@@ -53,15 +53,15 @@ const Discussion = (item) => {
             {
                 setReload(prev => !prev);
                 setMessage('');
+                toast.success('Comment added!')
             }
             else
             {
-                alert('Server error')
+                toast.error('Server error')
             }
         })
         .catch(err=>{
-            console.log(err)
-            alert('Error')
+            toast.error('Something went wrong!')
     })
     };
 
@@ -83,12 +83,12 @@ const Discussion = (item) => {
             }
             else
             {
-                alert('Server error')
+                toast.error('Server error')
             }
         })
         .catch(err=>{
             console.log(err)
-            alert('Error')
+            toast.error('Something went wrong!')
     })
     };
 
@@ -98,6 +98,7 @@ const Discussion = (item) => {
 
   return (
     <div className='disc'>
+        <div><Toaster/></div>
         <button className='toggle-btn' onClick={toggleComponent}>
           {toggle ? 'Ask AI' : 'Switch to Discussion'}
         </button>

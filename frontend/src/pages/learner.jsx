@@ -6,6 +6,7 @@ import { useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import { MdOutlineStar } from "react-icons/md";
 import Carousel from '../components/carousel.jsx';
+import toast, { Toaster } from 'react-hot-toast';
 
 function Learner()
 {
@@ -33,11 +34,11 @@ function Learner()
                 }
                 else
                 {
-                    alert('Server error')
+                    toast.error('Server error')
                 }
             })
             .catch(err=>{
-                alert('Error')
+                toast.error('Something went wrong!')
         })
         };
         getOfferedList();
@@ -45,6 +46,7 @@ function Learner()
 
     return(
       <div className='clist'>
+        <div><Toaster/></div>
         <Navbar page={'learner'}/> 
         <div className='clist-body'>
             <div className='clist-part'>

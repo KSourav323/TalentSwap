@@ -6,6 +6,7 @@ import axios from 'axios';
 import { MdOutlineStar } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 import { useSelector } from 'react-redux';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Search = () => {
   const navigate = useNavigate();
@@ -32,11 +33,11 @@ const Search = () => {
         }
         else
         {
-            alert('Server error')
+            toast.error('Server error')
         }
     })
     .catch(err=>{
-        alert('Error')
+        toast.error('Something went wrong!')
   })
   };
 
@@ -46,6 +47,7 @@ const Search = () => {
 
   return (
     <div className='search'>
+      <div><Toaster/></div>
       <Navbar page={'search'}/>
       <div className='search-body'>
         <div className='search-div'>

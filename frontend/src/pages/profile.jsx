@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import Navbar from '../components/navbar.jsx';
 import axios from 'axios';
 import Timestamp from '../components/timestamp';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Profile = () => {
     const [fname, setFname] = useState('');
@@ -31,20 +32,19 @@ const Profile = () => {
       .then(res=>{
           if(res.status===200) 
           {
-              alert('Updated')
+              toast.success('Profile updated')
               setPassword('')
               setRpassword('')
           }
           else if(res.status===201)
           {
-              alert('Wrong password')
+              toast.error('Wrong password')
               setPassword('')
               setRpassword('')
           }
       })
       .catch(err=>{
-          console.log(err)
-          alert('Error')
+          toast.error('Something went wrong!')
   })
   };
 
@@ -71,11 +71,11 @@ const Profile = () => {
             }
             else
             {
-                alert('Server error')
+                toast.error('Server error')
             }
         })
         .catch(err=>{
-            alert('Error')
+            toast.error('Something went wrong!')
     })
     };
     getOfferedList();
@@ -84,6 +84,7 @@ const Profile = () => {
 
   return (
     <div className='profile'>
+        <div><Toaster/></div>
         <Navbar page={'profile'}/>
         <div className="profile-body">
           <div className='profile-card'>

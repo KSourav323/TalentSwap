@@ -7,6 +7,7 @@ import axios from 'axios';
 import { MdOutlineStar } from "react-icons/md";
 import { MdOutlineDeleteSweep } from "react-icons/md";
 import { AiFillCloseCircle } from "react-icons/ai";
+import toast, { Toaster } from 'react-hot-toast';
 
 function Tutor()
 {
@@ -41,14 +42,15 @@ function Tutor()
                 setNewCourseDesc('');
                 setNewCourseCat('');
                 setShowPopup(!showPopup);
+                toast.success('Course added successfully!')
             }
             else
             {
-                alert('Server error')
+                toast.error('Server error')
             }
         })
         .catch(err=>{
-            alert('Error')
+            toast.error('Something went wrong!')
         })
     }
 
@@ -62,14 +64,15 @@ function handleDelete(item) {
         if(res.status===200) 
         {
             setReload(prev => !prev);
+            toast.success('Course deleted!')
         }
         else
         {
-            alert('Server error')
+            toast.error('Server error')
         }
     })
     .catch(err=>{
-        alert('Error')
+        toast.error('Something went wrong!')
     })
     }
 
@@ -89,11 +92,11 @@ function handleDelete(item) {
                 }
                 else
                 {
-                    alert('Server error')
+                    toast.error('Server error')
                 }
             })
             .catch(err=>{
-                alert('Error')
+                toast.error('Something went wrong!')
         })
         };
         getOfferedList();
@@ -101,6 +104,7 @@ function handleDelete(item) {
 
     return(
       <div className='clist'>
+        <div><Toaster/></div>
         <Navbar page={'tutor'}/> 
         <div className='clist-body'>
             <br />
