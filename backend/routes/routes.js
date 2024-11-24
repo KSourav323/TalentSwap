@@ -1,4 +1,5 @@
 const express = require('express');
+
 const User = require('../models/User');                     
 const Course = require('../models/Course');             
 const Video = require('../models/Video');             
@@ -461,6 +462,36 @@ router.post('/bookSlot', auth, async (req, res) => {
     sendMail(mailOptions)
 
     const newNotification = new Notification({ senderId:userId, receiverId:tutorId, content: content});
+    const savedNotification = await newNotification.save();
+
+    res.status(200).json({ message: 'sent' });
+  }
+  catch (error){
+    console.log(error)
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.post('/approve', auth, async (req, res) => {
+  const { senderId, receiverId, context } = req.body;
+  try{
+    const sender = await User.findOne({ userId:senderId });
+    const senderEmail = sender.email;
+    const receiver= await User.findOne({ userId:receiverId });
+    const receiverEmail = receiver.email
+
+    const mailOptions = {
+      from: senderEmail,  
+      to: receiverEmail,                       
+      subject: 'Appointment request ',              
+      text: 'Reply for: '+ context +' Slot confirmed' 
+    };
+
+    const content= 'Reply for: '+context+' Slot confirmed' 
+
+    sendMail(mailOptions)
+
+    const newNotification = new Notification({ senderId:senderId, receiverId:receiverId, content: content});
     const savedNotification = await newNotification.save();
 
     res.status(200).json({ message: 'sent' });

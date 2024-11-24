@@ -1,11 +1,12 @@
 .carousel {
     position: relative;
-    width: 98%;
+    width: 80%;
     overflow: hidden;
     margin: 0 auto;
     box-shadow: 0 9px 17px rgba(0, 0, 0, 0.5);
-    height: 100%;
+    height: 75%;
     border: solid 1px rgba(0, 0, 0);
+    border-radius: 20px;
   }
   
   .carousel-track {
@@ -184,7 +185,7 @@
   p{
     position: absolute;
     font-size: 450px; 
-    bottom: -100px;
+    bottom: -120px;
     right: -10px;
     font-family: 'Arial Narrow', Arial, sans-serif;
     letter-spacing: -60px;

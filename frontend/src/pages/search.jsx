@@ -88,13 +88,15 @@ const Search = () => {
             {results.map((item, index) => (
               <div className='course-li' key={index}  onClick={() => handleTile(item.courseId)} >
                 <img src={`/images/${item.category}.jpg`} className='card-image' loading="lazy" />
-                  <div className="card-text">
-                      <div className='det'>
-                          <p className='card-name'>{item.courseName}</p>
-                          <p className='card-info'>By {item.courseTutor}</p> 
-                          <p className='card-info'>{item.rating}<MdOutlineStar className='star'/>/5</p> 
-                      </div>
-                  </div>
+                <p className='card-star'>{item.rating}<MdOutlineStar className='star'/>/5</p> 
+                <div className="card-text">
+                    <div className='det'>
+                        <p className='card-name'>{item.courseName}</p>
+                        <p className='card-info'>By {item.courseTutor}</p> 
+                        <p className='card-info'>By {item.courseDesc}</p> 
+                        
+                    </div>
+                </div>
             </div> 
               ))}
           </ul>

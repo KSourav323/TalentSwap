@@ -6,8 +6,8 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'souravk.ofc@gmail.com', 
-    pass: 'qesz ogtg wubt ivrm',  
+    user: '##',
+    pass: '##',
   },
 });
 
@@ -44,4 +44,4 @@ function getVideoId(filename) {
 }
 
 
-module.exports = { generateCourseId, generateVideoId, getVideoId, generateChatId, generateUserId, generateToken, sendMail};
+module.exports = { generateCourseId, generateVideoId, getVideoId, generateChatId, generateUserId, generateToken, sendMail };

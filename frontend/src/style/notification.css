@@ -22,19 +22,47 @@
         justify-content: flex-start;
         align-items: center;
         padding-top: 10px;
+        overflow-y: auto;
     }
 
     .box{
         background-color: #24002a91;
         height: 100%;
         width: 40%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 100px;
+        font-family: inherit;
+        font-size: large;
     }
     
     .noti-li{
         width: 96%;
-        height: 10%;
+        height: fit-content;
         background-color: #5b4e82;
         border-radius: 10px;
         padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 5px;
+
+        .noti-text{
+            width: 90%;
+        }
+
+        button{
+            margin-top: 15px;
+            height: 50px;
+            width: 70px;
+            border-radius: 20px; 
+            border: 2px solid transparent;
+            background-color: rgba(21, 0, 26, 0.7); 
+            color: white;
+            font-size: 12px;
+            cursor: pointer;
+        }
     }
 }
